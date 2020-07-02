@@ -1,6 +1,6 @@
-HW #3: [Interaction Effects and Multi-Group Analyses](hw/hw3.html)
+[HW #3: Interaction Effects and Multi-Group Analyses](hw/hw3.html)
 
-HW #4: Curvilinear and Piecewise Linear Effects
+[HW #4: Curvilinear and Piecewise Linear Effects](hw/hw4.html)
 
 HW #5: Difference Scores and Profile Similarity Indices
 

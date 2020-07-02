@@ -2,8 +2,7 @@
 title: "HW #4: Curvilinear and Piecewise Linear Effects"
 author: "Daniel Lewis"
 date: "January 13, 2020"
-output: github_document
-always_allow_html: true
+output: html_document
 bibliography: ../biblio809.bib
 link-citations: true
 csl: ../apa.csl
