@@ -1,0 +1,172 @@
+---
+title: "HW #8: The Study of Change"
+output: html_document
+bibliography: ../biblio809.bib
+link-citations: true
+csl: ../apa.csl
+---
+
+# 1. Comparison of approaches
+
+First-difference model improves on cross-sectional model by reducing omitted variable bias (assuming the omitted variable is unchanging over time, it cancels out when subtracted from itself in the change score). But it assumes that the lagged dependent variable has no relationship to the dependent variable, which is usually not a viable assumption.
+
+The static score model improves on the first-difference model by including the lagged dependent variable, which often influences the dependent variable or the change score. Further, including the lagged dependent variable controls for regression to the mean effects. 
+
+The hierarchical linear model improves on both of the previous models in two ways. First, by partitioning variance into a between-subjects effect and a within-subjects effect, it allows researchers to understand effects and make predictions at the level of the subject. Second, by aggregating over more than just two time points, it may produce better estimates of change.
+
+# 2. Analysis of Time-Series Data
+
+### Set up working environment
+
+Here are the packages I will be using:
+
+```{r message = F, warning = F}
+# R Markdown
+library(knitr)
+
+# Projects
+library(here)
+
+# Statistics
+library(psych)
+
+# Tidyverse
+library(readxl)
+library(tidyverse)
+library(broom)
+library(glue)
+```
+
+I will import and take a look at the data.
+
+```{r}
+tbl.2 <- read_excel(here('data', 'sde.xlsx'))
+
+tbl.2[1:10, ] %>%
+  kable
+
+describe(tbl.2)[c('n', 'mean', 'sd', 'min', 'max')] %>%
+  kable
+```
+
+No missing data, sufficient variation&mdash;looks good!
+
+Finally, I will capture the reliabilities and time codes, as well as the categories for gender.
+
+```{r}
+dbl.2.p <- c(.864, .915, .903, .886)
+dbl.2.f <- c(.910, .927, .928, .947)
+int.2.t <- 0:3
+
+tbl.2 <- tbl.2 %>%
+  mutate(gen = factor(GENDER, labels = c("female", "male")))
+```
+
+## A. First-Difference Model
+
+To implement the first-difference approach, I relied on Equation 2 in @liker1985ssr:
+
+ΔY = Δβ₀ + β₁ΔX + β₂ΔZ + Δε,
+
+where Δ signifies the change in a variable between time periods and Z is an additional independent variable.
+
+This equation models the change in the dependent variable between time t and time t+1 as a function of the change in the intercept and change in the independent variables.
+
+Inputting our variables into Equation 2, we have:
+
+ΔFSDE = Δβ₀ + β₁ΔPSDE + Δε.
+
+To estimate this model, I will first create three new variables each for ΔFSDE and ΔPSDE by taking the difference in scores in each pair of scores from adjacent waves.
+
+```{r}
+tbl.2.a <- tbl.2 %>%
+  select(contains("SDE")) %>%
+  {
+    .[2:length(.)] - .[2:length(.) - 1]
+  } %>%
+  select(-FSDE1) %>%
+  set_names(paste(names(.), rep(1:3,2), sep = "_")) %>%
+  as_tibble
+
+tbl.2.a %>%
+  head %>%
+  kable
+```
+
+Next I will estimate the three models using OLS.
+
+```{r}
+# in:  t = latter time
+# out: first-difference linear regression model
+fun.2.a.1 <- function(data, t) {
+  glue("FSDE{t}_{t-1} ~ PSDE{t}_{t-1}") %>%
+    as.character %>%
+    as.formula %>%
+    lm(data)
+}
+
+2:4 %>%
+  map_df(~ fun.2.a.1(tbl.2.a, .) %>% tidy()) %>%
+  kable
+```
+
+Change in PSDE significantly predicts change in FSDE at time 2 (b1 ≈ .832, t ≈ 6.85, p < .001), time 3 (b1 ≈ .0513, t ≈ 7.79, p < .001), and time 4 (b1 ≈ .588, t ≈ 4,46, p < .001). The effect peaks in strength at time 3.
+
+Now let's look at the reliabilities of the change scores.
+
+```{r}
+# in: rel = vector of reliabilities
+#     v = "P" for PSDE or "F" for FSDE
+#     t = time
+# out: reliability of difference at time t
+fun.2.a.2 <- function(data, rel, v, t) {
+  x <- data[paste0(v, "SDE", t)]
+  y <- data[paste0(v, "SDE", t - 1)] 
+  s2x <- var(x)
+  s2y <- var(y)
+  ax <- rel[t]
+  ay <- rel[t - 1]
+  sxy <- cov(x, y)
+  ((s2x * ax) + (s2y * ay) - (2 * sxy)) / (s2x + s2y + (2 * sxy))
+}
+
+map(2:4, ~ fun.2.a.2(tbl.2, dbl.2.p, "P", .)) %>%
+  flatten_dbl %>%
+  set_names(c("PSDE2_1", "PSDE3_2", "PSDE4_3")) %>%
+  enframe("variable", "reliability") %>%
+  bind_rows(
+    map(2:4, ~ fun.2.a.2(tbl.2, dbl.2.f, "F", .)) %>%
+      flatten_dbl %>%
+      set_names(c("FSDE2_1", "FSDE3_2", "FSDE4_3")) %>%
+      enframe("variable", "reliability")
+  ) %>%
+  kable
+```
+
+The original reliabilities ranged from .864 for PSDE1 to .947 for FSDE4. The new reliabilities are dramatically lower, ranging from just .056 for PSDE4_3 to .335 for FSDE2_1.
+
+To understand the relationships among the four variables implicitly embedded in the first-difference model, we could use a similar approach to that presented by @edwards2002maabioaimada: a regression equation with the difference-scored variables pulled apart into their component parts. However, because we are also using a difference-scored variable as a dependent variable, we would need to use a multivariate regression method, like CCA or MMR [@thompson1991m&eic&d; @dwyer1983smftsabs].
+
+## B. Static-Score Model
+
+To develop a static-score model for the data, I relied on Equation 2.5 from [-@finkel1995]:
+
+Yₜ = β₀ + β₁Xₜ + β₂Yₜ₋₁ + εₜ
+
+Whereas the first-difference approach modeled *change* in Y as a function of *change* in X, the static-score approach models Y as a function of X *and the prior value of Y*. As before, we can get estimates for three models, representing change from period one to two, two to three, and three to four.
+
+```{r}
+map(2:4, ~ glue("FSDE{.} ~ PSDE{.} + FSDE{. - 1}")) %>%
+  map(lm, data = tbl.2) %>%
+  map_df(tidy) %>%
+  kable
+```
+
+First, the lagged dependent variable (Yₜ₋₁) has significant effects at time three and time four. That suggests some degree of serial auto-correlation for FSDE.
+
+Second, PSDE positively and significantly predicts FSDE at all time periods, suggesting that 
+
+## C. Hierarchical Linear Model
+
+
+## References
