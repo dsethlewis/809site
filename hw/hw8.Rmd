@@ -1,9 +1,9 @@
 ---
 title: "HW #8: The Study of Change"
+author: Daniel Lewis
+date: 3/1/20
 output: html_document
-bibliography: ../biblio809.bib
-link-citations: true
-csl: ../apa.csl
+bibliography: "`r rbbt::bbt_write_bib('biblio.json', overwrite = TRUE)`"
 ---
 
 # 1. Comparison of approaches
@@ -64,7 +64,7 @@ tbl.2 <- tbl.2 %>%
 
 ## A. First-Difference Model
 
-To implement the first-difference approach, I relied on Equation 2 in @liker1985ssr:
+To implement the first-difference approach, I relied on Equation 2 in @finkel95:
 
 ΔY = Δβ₀ + β₁ΔX + β₂ΔZ + Δε,
 
@@ -145,11 +145,11 @@ map(2:4, ~ fun.2.a.2(tbl.2, dbl.2.p, "P", .)) %>%
 
 The original reliabilities ranged from .864 for PSDE1 to .947 for FSDE4. The new reliabilities are dramatically lower, ranging from just .056 for PSDE4_3 to .335 for FSDE2_1.
 
-To understand the relationships among the four variables implicitly embedded in the first-difference model, we could use a similar approach to that presented by @edwards2002maabioaimada: a regression equation with the difference-scored variables pulled apart into their component parts. However, because we are also using a difference-scored variable as a dependent variable, we would need to use a multivariate regression method, like CCA or MMR [@thompson1991m&eic&d; @dwyer1983smftsabs].
+To understand the relationships among the four variables implicitly embedded in the first-difference model, we could use a similar approach to that presented by @edwards02: a regression equation with the difference-scored variables pulled apart into their component parts. However, because we are also using a difference-scored variable as a dependent variable, we would need to use a multivariate regression method, like CCA or MMR [@thompson91; @dwyer83].
 
 ## B. Static-Score Model
 
-To develop a static-score model for the data, I relied on Equation 2.5 from [-@finkel1995]:
+To develop a static-score model for the data, I relied on Equation 2.5 from @finkel95:
 
 Yₜ = β₀ + β₁Xₜ + β₂Yₜ₋₁ + εₜ
 
@@ -164,9 +164,51 @@ map(2:4, ~ glue("FSDE{.} ~ PSDE{.} + FSDE{. - 1}")) %>%
 
 First, the lagged dependent variable (Yₜ₋₁) has significant effects at time three and time four. That suggests some degree of serial auto-correlation for FSDE.
 
-Second, PSDE positively and significantly predicts FSDE at all time periods, suggesting that 
+Second, PSDE positively and significantly predicts FSDE at all time periods, suggesting that the two variables are correlated.
 
 ## C. Hierarchical Linear Model
+
+In HLM, we model change for an individual with intercept and slope parameters using variance across time periods. Each individual will have their own intercept and slope, representing their personal rate of change.
+
+In the present case, we can model the effect of PSDE on individual's rate of change in FSDE. I chose to use PSDE1 as the predictor as it is the baseline value of PSDE in the dataset. (Note: I tested PSDE2-4, and the effect on A0 and A1 diminish over time. I think that makes sense.)
+
+First, let's look at the effect of PSDE1 on A0.
+
+```{r}
+tbl.2 %>%
+  lm(A0 ~ PSDE1, .) %>%
+  tidy
+```
+The effect is positive and significant. We can interpret that to mean that the stronger an individual's sense of perceived self-development opportunities, the higher one's baseline level of feelings about self-development opportunities. Nothing terribly surprising there.
+
+Next, let's look at the effect of PSDE1 on A1.
+
+```{r}
+tbl.2 %>%
+  lm(A1 ~ PSDE1, .) %>%
+  tidy
+```
+
+The effect is negative and significant. This means that the stronger an individual's sense of perceived self-development opportunities, the less change one experiences in one's own feelings about self-development opportunities. That is, people who think they have plenty of opportunities are more stable in their feelings about it.
+
+Finally, let's see whether there are gender differences in A0 and A1.
+
+```{r}
+tbl.2 %>%
+  lm(A0 ~ GENDER, .) %>%
+  tidy
+
+tbl.2 %>%
+  lm(A1 ~ GENDER, .) %>%
+  tidy
+```
+
+The effect of gender on A0 is negative and nearly, but not quite, significant. If I were to interpret the result anyway, I would say that female participants had more positive feelings about self-development opportunities than men.
+
+There was no significant gender difference on change in feelings about self-development opportunities.
+
+## D. Conclusion
+
 
 
 ## References

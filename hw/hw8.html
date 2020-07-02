@@ -9,6 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Daniel Lewis" />
 
 
 <title>HW #8: The Study of Change</title>
@@ -362,6 +363,8 @@ summary {
 
 
 <h1 class="title toc-ignore">HW #8: The Study of Change</h1>
+<h4 class="author">Daniel Lewis</h4>
+<h4 class="date">3/1/20</h4>
 
 </div>
 
@@ -679,7 +682,7 @@ tbl.2 &lt;- tbl.2 %&gt;%
 </div>
 <div id="a.-first-difference-model" class="section level2">
 <h2>A. First-Difference Model</h2>
-<p>To implement the first-difference approach, I relied on Equation 2 in <span class="citation">(<span class="citeproc-not-found" data-reference-id="liker1985ssr"><strong>???</strong></span>)</span>:</p>
+<p>To implement the first-difference approach, I relied on Equation 2 in <span class="citation">Finkel (1995)</span>:</p>
 <p>ΔY = Δβ₀ + β₁ΔX + β₂ΔZ + Δε,</p>
 <p>where Δ signifies the change in a variable between time periods and Z is an additional independent variable.</p>
 <p>This equation models the change in the dependent variable between time t and time t+1 as a function of the change in the intercept and change in the independent variables.</p>
@@ -891,11 +894,11 @@ map(2:4, ~ fun.2.a.2(tbl.2, dbl.2.p, &quot;P&quot;, .)) %&gt;%
 </tbody>
 </table>
 <p>The original reliabilities ranged from .864 for PSDE1 to .947 for FSDE4. The new reliabilities are dramatically lower, ranging from just .056 for PSDE4_3 to .335 for FSDE2_1.</p>
-<p>To understand the relationships among the four variables implicitly embedded in the first-difference model, we could use a similar approach to that presented by <span class="citation">Edwards (<a href="#ref-edwards2002maabioaimada" role="doc-biblioref">2002</a>)</span>: a regression equation with the difference-scored variables pulled apart into their component parts. However, because we are also using a difference-scored variable as a dependent variable, we would need to use a multivariate regression method, like CCA or MMR <span class="citation">(Dwyer, <a href="#ref-dwyer1983smftsabs" role="doc-biblioref">1983</a>; Thompson, <a href="#ref-thompson1991m&amp;eic&amp;d" role="doc-biblioref">1991</a>)</span>.</p>
+<p>To understand the relationships among the four variables implicitly embedded in the first-difference model, we could use a similar approach to that presented by <span class="citation">Edwards (2002)</span>: a regression equation with the difference-scored variables pulled apart into their component parts. However, because we are also using a difference-scored variable as a dependent variable, we would need to use a multivariate regression method, like CCA or MMR <span class="citation">(Thompson 1991; Dwyer 1983)</span>.</p>
 </div>
 <div id="b.-static-score-model" class="section level2">
 <h2>B. Static-Score Model</h2>
-<p>To develop a static-score model for the data, I relied on Equation 2.5 from <span class="citation">(<span class="citeproc-not-found" data-reference-id="finkel1995"><strong>???</strong></span>)</span>:</p>
+<p>To develop a static-score model for the data, I relied on Equation 2.5 from <span class="citation">Finkel (1995)</span>:</p>
 <p>Yₜ = β₀ + β₁Xₜ + β₂Yₜ₋₁ + εₜ</p>
 <p>Whereas the first-difference approach modeled <em>change</em> in Y as a function of <em>change</em> in X, the static-score approach models Y as a function of X <em>and the prior value of Y</em>. As before, we can get estimates for three models, representing change from period one to two, two to three, and three to four.</p>
 <pre class="r"><code>map(2:4, ~ glue(&quot;FSDE{.} ~ PSDE{.} + FSDE{. - 1}&quot;)) %&gt;%
@@ -979,22 +982,69 @@ map(2:4, ~ fun.2.a.2(tbl.2, dbl.2.p, &quot;P&quot;, .)) %&gt;%
 </tbody>
 </table>
 <p>First, the lagged dependent variable (Yₜ₋₁) has significant effects at time three and time four. That suggests some degree of serial auto-correlation for FSDE.</p>
-<p>Second, PSDE positively and significantly predicts FSDE at all time periods, suggesting that</p>
+<p>Second, PSDE positively and significantly predicts FSDE at all time periods, suggesting that the two variables are correlated.</p>
 </div>
 <div id="c.-hierarchical-linear-model" class="section level2">
 <h2>C. Hierarchical Linear Model</h2>
+<p>In HLM, we model change for an individual with intercept and slope parameters using variance across time periods. Each individual will have their own intercept and slope, representing their personal rate of change.</p>
+<p>In the present case, we can model the effect of PSDE on individual’s rate of change in FSDE. I chose to use PSDE1 as the predictor as it is the baseline value of PSDE in the dataset. (Note: I tested PSDE2-4, and the effect on A0 and A1 diminish over time. I think that makes sense.)</p>
+<p>First, let’s look at the effect of PSDE1 on A0.</p>
+<pre class="r"><code>tbl.2 %&gt;%
+  lm(A0 ~ PSDE1, .) %&gt;%
+  tidy</code></pre>
+<pre><code>## # A tibble: 2 x 5
+##   term        estimate std.error statistic  p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)   -2.10     0.366      -5.73 2.24e- 7
+## 2 PSDE1          0.691    0.0632     10.9  6.95e-17</code></pre>
+<p>The effect is positive and significant. We can interpret that to mean that the stronger an individual’s sense of perceived self-development opportunities, the higher one’s baseline level of feelings about self-development opportunities. Nothing terribly surprising there.</p>
+<p>Next, let’s look at the effect of PSDE1 on A1.</p>
+<pre class="r"><code>tbl.2 %&gt;%
+  lm(A1 ~ PSDE1, .) %&gt;%
+  tidy</code></pre>
+<pre><code>## # A tibble: 2 x 5
+##   term        estimate std.error statistic p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+## 1 (Intercept)    0.553    0.248       2.23 0.0288 
+## 2 PSDE1         -0.117    0.0428     -2.73 0.00794</code></pre>
+<p>The effect is negative and significant. This means that the stronger an individual’s sense of perceived self-development opportunities, the less change one experiences in one’s own feelings about self-development opportunities. That is, people who think they have plenty of opportunities are more stable in their feelings about it.</p>
+<p>Finally, let’s see whether there are gender differences in A0 and A1.</p>
+<pre class="r"><code>tbl.2 %&gt;%
+  lm(A0 ~ GENDER, .) %&gt;%
+  tidy</code></pre>
+<pre><code>## # A tibble: 2 x 5
+##   term        estimate std.error statistic  p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)    2.25      0.242      9.29 6.96e-14
+## 2 GENDER        -0.539     0.274     -1.97 5.32e- 2</code></pre>
+<pre class="r"><code>tbl.2 %&gt;%
+  lm(A1 ~ GENDER, .) %&gt;%
+  tidy</code></pre>
+<pre><code>## # A tibble: 2 x 5
+##   term        estimate std.error statistic p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+## 1 (Intercept)  -0.141      0.108    -1.30    0.197
+## 2 GENDER        0.0380     0.122     0.311   0.757</code></pre>
+<p>The effect of gender on A0 is negative and nearly, but not quite, significant. If I were to interpret the result anyway, I would say that female participants had more positive feelings about self-development opportunities than men.</p>
+<p>There was no significant gender difference on change in feelings about self-development opportunities.</p>
+</div>
+<div id="d.-conclusion" class="section level2">
+<h2>D. Conclusion</h2>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2>References</h2>
 <div id="refs" class="references">
-<div id="ref-dwyer1983smftsabs">
-<p>Dwyer, J. H. (1983). Multivariate Regression and Multivariate ANOVA. In <em>Statistical models for the social and behavioral sciences</em> (pp. 163–207). Oxford University Press.</p>
+<div id="ref-dwyer83">
+<p>Dwyer. 1983. “Multivariate Regression and Multivariate ANOVA.” In <em>Statistical Models for the Social and Behavioral Sciences</em>.</p>
 </div>
-<div id="ref-edwards2002maabioaimada">
-<p>Edwards, J. R. (2002). Alternatives to Difference Scores. In F. Drasgow &amp; N. Schmitt (Eds.), <em>Measuring and analyzing behavior in organizations: Advances in measurement and data analysis</em>. Jossey-Bass.</p>
+<div id="ref-edwards02">
+<p>Edwards, Jeffrey R. 2002. “Alternatives to Difference Scores.” In <em>Advances in Measurement and Data Analysis</em>.</p>
 </div>
-<div id="ref-thompson1991m&amp;eic&amp;d">
-<p>Thompson, B. (1991). A primer on the logic and use of canonical correlation analysis. <em>Measurement &amp; Evaluation in Counseling &amp; Development</em>, <em>24</em>(2), 80.</p>
+<div id="ref-finkel95">
+<p>Finkel, S. E. 1995. “Modeling Change with Panel Data.” In <em>Causal Analysis with Panel Data</em>.</p>
+</div>
+<div id="ref-thompson91">
+<p>Thompson, Bruce. 1991. “A Primer on the Logic and Use of Canonical Correlation Analysis.” <em>Measurement and Evaluation in Counseling and Development</em>, July.</p>
 </div>
 </div>
 </div>
