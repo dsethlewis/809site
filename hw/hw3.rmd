@@ -2,7 +2,7 @@
 title: "HW #3: Interaction Effects and Multi-Group Analyses"
 author: "Daniel Lewis"
 date: "December 25, 2019"
-output: github_document
+output: html_document
 editor_options: 
   chunk_output_type: console
 always_allow_html: true
@@ -21,7 +21,6 @@ library(corrr)
 library(magrittr)
 library(wrapr)
 library(viridis)
-library(directlabels)
 
 # Markdown #
 library(rmarkdown)
@@ -255,8 +254,8 @@ tbl.3.b.3 %>%
              xend = 7, yend = intercept + slope * 7,
              color = gen)) +
   geom_segment() +
-  geom_dl(aes(label = new, color = gen),
-          method = list(dl.trans(x = x - 1.5), 'last.bumpup')) +
+  # geom_dl(aes(label = new, color = gen),
+  #         method = list(dl.trans(x = x - 1.5), 'last.bumpup')) +
   scale_x_continuous(expand = expand_scale(.25)) +
   scale_y_continuous(expand = expand_scale(.1)) +
   labs(x = "predictor", y = "anxiety", title = "Plot of Simple Slopes for Family-Related Predictors") +
@@ -355,8 +354,8 @@ tbl.3.c.3 %>%
              xend = 7, yend = intercept + slope * 7,
              color = lvl)) +
   geom_segment() +
-  geom_dl(aes(label = new, color = lvl),
-          method = list(dl.trans(x = x - 1.5), 'last.bumpup')) +
+  # geom_dl(aes(label = new, color = lvl),
+  #         method = list(dl.trans(x = x - 1.5), 'last.bumpup')) +
   scale_x_continuous(expand = expand_scale(.25)) +
   scale_y_continuous(expand = expand_scale(.1)) +
   labs(x = "predictor", y = "anxiety", title = "Plot of Simple Slopes for Significant Interactions with Importance") +
