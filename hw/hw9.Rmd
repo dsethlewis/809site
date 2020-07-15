@@ -1,0 +1,9 @@
+---
+title: 'HW #9: Mediation'
+author: "Daniel Lewis"
+date: "7/15/2020"
+output: html_document
+bibliography: biblio.json
+csl: "../apa.csl"
+---
+

@@ -10,7 +10,7 @@ HW #6: Categorical Dependent Variables
 
 [HW #8: Repeated Measures and the Study of Change](hw/hw8.html)
 
-HW #9: Mediation
+[HW #9: Mediation](hw/hw9.html)
 
 HW #10: Path Analysis
 
