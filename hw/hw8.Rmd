@@ -178,7 +178,8 @@ First, let's look at the effect of PSDE1 on A0.
 ```{r}
 tbl.2 %>%
   lm(A0 ~ PSDE1, .) %>%
-  tidy
+  tidy %>%
+  kable
 ```
 The effect is positive and significant. We can interpret that to mean that the stronger an individual's sense of perceived self-development opportunities, the higher one's baseline level of feelings about self-development opportunities. Nothing terribly surprising there.
 
@@ -187,7 +188,8 @@ Next, let's look at the effect of PSDE1 on A1.
 ```{r}
 tbl.2 %>%
   lm(A1 ~ PSDE1, .) %>%
-  tidy
+  tidy %>%
+  kable
 ```
 
 The effect is negative and significant. This means that the stronger an individual's sense of perceived self-development opportunities, the less change one experiences in one's own feelings about self-development opportunities. That is, people who think they have plenty of opportunities are more stable in their feelings about it.
@@ -197,11 +199,13 @@ Finally, let's see whether there are gender differences in A0 and A1.
 ```{r}
 tbl.2 %>%
   lm(A0 ~ GENDER, .) %>%
-  tidy
+  tidy %>%
+  kable
 
 tbl.2 %>%
   lm(A1 ~ GENDER, .) %>%
-  tidy
+  tidy %>%
+  kable
 ```
 
 The effect of gender on A0 is negative and nearly, but not quite, significant. If I were to interpret the result anyway, I would say that female participants had more positive feelings about self-development opportunities than men.
@@ -210,6 +214,10 @@ There was no significant gender difference on change in feelings about self-deve
 
 ## D. Conclusion
 
+Overall, there's a positive relationship between perceptions and feelings about self-development opportunities that is stable over time. There's also a positive relationship between the change in perceptions and the change in feelings. As the first-difference model showed, a change in perceived self-development opportunities was associated with a change in feelings toward self-development opportunities in all time periods.
 
+There did appear to be some stability in the variables themselves, but even when controlling for the lagged dependent variable, there was a significant relationship between perceptions and feelings at all time periods, as shown by the static-score model.
+
+Finally, the hierarchical linear model allowed us to examine the rates of change. Using HLM, I found a significant relationship between the magnitude of initial perceived self-development opportunities (PSDE1) and the average rate of change of feelings toward self-development opportunities (A1). The higher a participant scored on perceptions at the initial assessment, the less change in feelings they experienced over the course of the study.
 
 ## References
