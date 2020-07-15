@@ -3,7 +3,8 @@ title: "HW #8: The Study of Change"
 author: Daniel Lewis
 date: 3/1/20
 output: html_document
-bibliography: "`r rbbt::bbt_write_bib('biblio.json', overwrite = TRUE)`"
+bibliography: biblio.json
+csl: "../apa.csl"
 ---
 
 # 1. Comparison of approaches
