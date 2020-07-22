@@ -3,7 +3,184 @@ title: 'HW #9: Mediation'
 author: "Daniel Lewis"
 date: "7/15/2020"
 output: html_document
-bibliography: biblio.json
+bibliography: "`r rbbt::bbt_write_bib('biblio.json', overwrite = TRUE)`"
 csl: "../apa.csl"
 ---
 
+## 1. Comparing Procedures for Mediation Analysis
+
+### @baron_kenny86 Criteria
+
+The four criteria for mediation are:
+
+a. the IV significantly affects the (candidate) mediator,
+b. the (candidate) mediator significantly affects the DV,
+c. the IV significantly affects the DV, and
+d. when the (candidate) mediator is controlled for, the IV does *not* significantly affect the DV [@baron_kenny86].
+
+Partial mediation exists when criteria a, b, and c are met, but criterion d is not met. Complete mediation exists when all four criteria are met.
+
+Criteria a and b seem essential to the concept of mediation.
+
+Criterion c is theoretically essential, but in practice may lead to an incorrect conclusion. That is, there may be variables that are so weakly related that they fail to pass a significance test but which nevertheless meet criteria a and b by a hair because they are each related to a third variable more strongly.
+
+Criterion d involves reasoning from a null result, which is almost always problematic because null results can be found for any number of reasons. And as @baron_kenny86 note, controlling for the mediator, which is hypothesized to be correlated to both the IV and DV, leads to multicollinearity, diminishing the power of the analysis. Thus, I believe a null result could be found because of multicollinearity rather than complete mediation.
+
+### @mackinnon_etal07 Recommendations
+
+I'm not sure I understand exactly what is different in @mackinnon_etal07 vs. @baron_kenny86, but it seems like @mackinnon_etal07 introduce a way to test for the size and significance of the mediated effect. Specifically, @mackinnon_etal07 propose using $\hat{c} - \hat{c}^{\prime}$ or $\hat{a}\hat{b}$ for the mediated effect. (These are equivalent when using normal theory OLS.) Then the standard error can be found using $\sigma_{\hat{a}\hat{b}} = \sqrt{\sigma_{\hat{a}}^2\hat{b}^2 + \sigma_{\hat{b}}^2\hat{a}^2}$ and a test-statistic can be created in the form of $\frac{\hat{a}\hat{b}}{\sigma_{\hat{a}\hat{b}}}$ using the normal distribution as a reference.
+
+This handles my final criticism (of criterion d) by eliminating the need to test for the null. And it introduces a way to measure the size of the mediated effect.
+
+## 2. Conducting Mediation Analysis
+
+Let's move onto the practical analysis. I will initialize my working environment by loading some R packages.
+
+```{r message = F, warning = F}
+# Projects
+library(here)
+
+# R Markdown
+library(knitr)
+
+# Statistics
+library(psych)
+
+# Tidyverse
+library(readxl)
+library(tidyverse)
+library(broom)
+library(glue)
+```
+
+Then I will load the data.
+
+```{r}
+tbl.2 <- read_excel(here('data', 'MEDIATE.xls'))
+
+tbl.2[1:10, ] %>%
+  kable
+
+describe(tbl.2)[c('n', 'mean', 'sd', 'min', 'max')] %>%
+  kable
+```
+
+There are some missing data, but for this assignment, I will proceed without using an imputation procedure. Otherwise the data look usable.
+
+### A. @baron_kenny86 Procedure
+
+Using the data, I will use the @baron_kenny86 procedure to evaluate whether rewards mediate the relationship between organizational values and employee behavior.
+
+I will test each of the four content dimensions with each of the four outcomes. I will proceed by testing each criterion in turn. After testing each criterion, I will eliminate non-significant relationships from future tests because each criterion is necessary for mediation. The only exception to this rule is criterion d, which I will test last to distinguish the partial mediation models from the complete mediation models.
+
+#### Criterion A
+
+Recall that criterion a is that there is a significant relationship between the independent variables and the candidate mediator in the expected direction. In the present context, we are looking for positive, significant effects of values on rewards.
+
+```{r}
+chr.2.iv <- c("PAY", "SEC", "ATH", "PRE")
+chr.2.iv %>%
+  map_df(~ lm(glue("{.}H ~ {.}O"), tbl.2) %>% tidy) %>%
+  kable
+```
+
+It appears all four independent variables (for organizational values) have significant positive effects on their respective mediators.
+
+#### Criterion B
+
+Criterion b is that there is a significant relationship between the candidate mediator and the dependent variable in the expected direction. Here, we are looking for rewards to positively affect job satisfaction, organizational identification, and organizational citizenship behaviors and negatively affect turnover intentions.
+
+```{r results = 'asis'}
+fun.2.a <- function(dv, iv, suf, suf2 = NULL) {
+  print(dv)
+  iv %>%
+    map_df(~ lm(glue("{dv} ~ {.}{suf}{ifelse(is.null(suf2), '', paste(' + ', ., suf2, sep = ''))}"),
+                tbl.2) %>%
+             tidy) %>%
+    kable %>%
+    print
+}
+
+chr.2.dv <- c('JOBSAT', 'TOI', 'IDENT', 'OCB')
+
+chr.2.dv %>%
+  walk(~ fun.2.a(., chr.2.iv, 'H'))
+
+```
+As the output shows, all models meet criterion b.
+
+#### Criterion C
+
+Criterion c is simply that there is a significant main effect of the IV on the DV in the expected direction. As before, we are looking for positive effects of all IVs on all DVs except turnover intentions, which we hypothesize will be negative.
+
+```{r results = 'asis'}
+chr.2.dv %>%
+  walk(~ fun.2.a(., chr.2.iv, 'O'))
+```
+
+All effects are significant except the effect of ATHO on OCB. Thus, I will drop the authority-OCB model from the analysis of criterion d. All other models I can now state have either partial or complete mediation.
+
+#### Criterion D
+
+Criterion d distinguishes partial from complete mediation. When controlling for the mediator, if the IV has no effect on the DV, the relationship between the IV and the DV is completely mediated. Otherwise it is only partially mediated.
+
+```{r results = 'asis'}
+chr.2.dv %>%
+  walk(~ fun.2.a(., chr.2.iv, 'O', 'H'))
+```
+
+The results show that the effects of the prestige value on job satisfaction, turnover intentions, and OCBs are completely mediated by rewards. The effects of the authority value on turnover intentions and identification are completely mediated by rewards. And finally, the effect of the pay value on OCBs is completely mediated by rewards.
+
+The other nine effects are only partially mediated by rewards.
+
+### B. @mackinnon_etal07 Procedure
+
+THe @mackinnon_etal07 procedure swaps out criterion d for an estimate of the mediated effect, along with standard error estimates and a significance test.
+
+I will write a function to calculate $\hat{a}\hat{b}$, $\sigma_{\hat{a}\hat{b}}$, and $p$.
+
+```{r}
+fun.2.b <- function(dv, iv) {
+  mod.a <- lm(glue('{iv}H ~ {iv}O'), tbl.2)
+  mod.b <- lm(glue('{dv} ~ {iv}H'), tbl.2)
+  a <- coef(mod.a)[2]
+  b <- coef(mod.b)[2]
+  ab <- a * b
+  sa <- mod.a %>%
+    tidy %>%
+    filter(term != '(Intercept)') %>%
+    pull(std.error)
+  sb <- mod.b %>%
+    tidy %>%
+    filter(term != '(Intercept)') %>%
+    pull(std.error)
+  sab <- sqrt(((sa^2) * (b^2)) + ((sb^2) * (a^2)))
+  z <- ab / sab
+  p <- (1 - pnorm(z)) * 2
+  tibble(value = iv, outcome = dv, estimate = ab, std.error = sab, test.stat = z, p.val = p)
+}
+
+tbl.2.c <- chr.2.dv %>%
+  map_df(~ map(chr.2.iv, ~ fun.2.b(.y, .x), .y = .x))
+
+tbl.2.c %>%
+  kable
+```
+
+The p-values for TOI are incorrect because the function I wrote assumes a positive effect. Here are the correct p-values for TOI.
+
+```{r}
+tbl.2.c %>%
+  filter(outcome == "TOI") %>%
+  pull(test.stat) %>%
+  map(~ pnorm(.) * 2)
+```
+I had hoped to find some non-significant mediated effects, which would have made a contrast with the @baron_kenny86 procedure straightforward. Unfortunately, there appears to be a significant mediated effect for all models, including even the authority-OCB model, which does not have a significant main effect.
+
+However, the @mackinnon_etal07 results do show the relative effect sizes of the different models. Prestige had the largest mediated effect of any predictor for each of the outcome variables. Authority had the smallest mediated effects.
+
+### C. Conclusion
+
+Both analyses suggest that rewards do seem to mediate the effects of values on all four outcomes. In one case, with regards to authority, values did not appear to affect the outcome of OCB and therefore mediation is ruled out. Finally, the strength of mediation varied. Rewards may have mattered most for prestige and least for authority.
+
+## References
