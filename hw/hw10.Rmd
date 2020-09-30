@@ -1,0 +1,551 @@
+---
+title: 'HW #10: Path Analysis'
+author: "Daniel Lewis"
+date: "7/28/2020"
+output: 
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github
+bibliography: biblio.json
+csl: "../apa.csl"
+---
+
+## 2. Path Analysis of Theoretical Model A
+
+Before diving into the analysis, I will load my packages, import the data, and take a look.
+
+#### Packages
+
+```{r message = F, warning = F}
+# Projects
+library(here)
+
+# R Markdown
+library(knitr)
+library(rbbt)
+
+# Statistics
+library(psych)
+
+# Tidyverse
+library(readxl)
+library(tidyverse)
+library(broom)
+library(glue)
+library(corrr)
+```
+
+#### Data
+
+```{r}
+tbl.2 <- read_excel(here('data', 'AMBSTD.xlsx'))
+
+tbl.2[1:10, ] %>%
+  kable
+
+describe(tbl.2)[c('n', 'mean', 'sd', 'min', 'max')] %>%
+  kable
+```
+No data are missing, and the data are fully standardized. Excellent.
+
+### a. Path Coefficients
+
+First, I'm going to write down Model A as a system of equations, using equations 15.1a-15.1d in @pedhazur82 .
+
+$$
+\begin{aligned}
+AMB &= e_1 \\
+CD &= p_{21}AMB + e_2 \\
+TP &= p_{31}AMB + p_{32}CD + e_3 \\
+HI &= p_{42}CD + p_{43}TP + e_4 \\
+ANX &= p_{53}TP + p_{54}HI + e_5
+\end{aligned}
+$$
+These equations will inform the regression models I estimate.
+
+I believe, because AMB is an exogenous variable, the estimate of $e_1$ is simply the expected value of AMB.
+
+```{r}
+e1 <- mean(tbl.2$amb)
+e1
+```
+
+Now for the interesting path coefficients.
+
+```{r}
+fit.2.2 <- lm(cd ~ amb, tbl.2)
+fit.2.2 %>%
+  tidy %>%
+  kable
+```
+
+$p_{21}$ is the estimate of the coefficient of amb, so $p_{21} \approx 0.55$.
+
+According to @pedhazur82, $e_j = \sqrt{1 - R^2_{j,12...i}}$, "where $R^2_{j,12...i}$ is the squared multiple of correlation of endogenous variable $j$ with variables $1, 2, \dots, i$" [@pedhazur82, 585]. Thus, in the single-predictor, standardized case,
+$$
+\begin{aligned}
+e_2 &= \sqrt{1-R^2_{2,1}} \\
+&= \sqrt{1-r^2_{21}} \\
+&= \sqrt{1-p^2_{21}} 
+\end{aligned}
+$$
+
+```{r}
+p21 <- coef(fit.2.2)["amb"]
+
+e2 <- sqrt(1 - p21^2)
+e2
+```
+The result is that $e_2 \approx 0.83$.
+
+Next, let's take a look at $p_{31}$, $p_{32}$ and $e_3$.
+
+```{r}
+fit.2.3 <- lm(tp ~ amb + cd, tbl.2)
+p31 <- coef(fit.2.3)["amb"]
+p32 <- coef(fit.2.3)["cd"]
+fit.2.3 %>%
+  tidy %>%
+  kable
+```
+
+$p_{31}$ is the effect of AMB on TP, and is approximately .22. $p_{32}$ is the effect of CD on TP, and is approximately .18.
+
+$e_3$ is slightly more complicated to calculate than $e_2$ because we now have more than one predictor. Thankfully, R can automatically compute $R^2$ for the fitted model.
+
+```{r}
+R23 <- summary(fit.2.3)$r.squared
+e3 <- sqrt(1 - R23)
+e3
+```
+Thus, $e_3 \approx .94$, which is a little larger than $e_2$.
+
+The process for $p_{42}$, $p_{43}$, $e_4$, $p_{53}$, $p_{54}$, and $e_5$ is essentially the same as that presented above, so I will present the syntax and results with less commentary.
+
+```{r}
+fit.2.4 <- lm(hi ~ cd + tp, tbl.2)
+p42 <- coef(fit.2.4)["cd"]
+p43 <- coef(fit.2.4)["tp"]
+e4 <- sqrt(1 - summary(fit.2.4)$r.squared)
+
+fit.2.5 <- lm(anx ~ tp + hi, tbl.2)
+p53 <- coef(fit.2.5)["tp"]
+p54 <- coef(fit.2.5)["hi"]
+e5 <- sqrt(1 - summary(fit.2.5)$r.squared)
+
+tibble(p42, p43, e4, p53, p54, e5) %>%
+  kable
+```
+
+Now with all the coefficients estimated, I can point out that $p_{21}$ (the effect of AMB on CD) is the strongest, followed by $p_{43}$.
+
+### b. Decomposed Correlations
+
+Definitions of direct effect, indirect effect, total effect, spurious component, and unanalyzed component @pedhazur82:
+
+* Direct Effect: The estimated effect of one variable on another.
+    + Ex: The effect of AMB on CD.
+* Indirect Effect: The mediated effect of one variable on another.
+    + Ex: The effect of AMB on HI *via CD*.
+* Total Effect (also known as the effect coefficient): The sum of the direct and indirect effects of one variable on anther.
+    + Ex: The effect of AMB on TP and the effect of AMB on TP *via CD*.
+* Spurious Component: The correlation between two variables not explained by the total effect of one variable on another&em;in other words, the correlation between two variables that is explained by a common cause.
+    + Ex: The correlation between CD and TP explained by AMB, rather than the effect of CD on TP.
+* Unanalyzed Component: The correlation between two variables not explained by a causal path in the model.
+    + Ex: The effect of AMB on TP explained by AMB's correlation with CD and CD's effect on TP *in Theoretical Model B*. No correlations in Theoretical Model A will have unanalyzed components.
+    
+The sum of the spurious and unanalyzed components is the noncausal part of the correlation coefficient.
+
+Let's move on to the calculations, beginning with $r_{12}$, the correlation between AMB and CD.
+
+$r_{12}$ is fully explained by $p_{21}$, the direct effect of AMB on CD, which we already know is approximately .55.
+
+```{r}
+DE.12 <- p21
+r12 <- DE.12
+```
+
+
+$r_{13}$, the correlation between AMB and TP, is a combination of the direct effect of AMB on TP and the indirect effect mediated by CD. Thus, $r_{13} = p_{31} + p_{21}p_{32}$.
+
+```{r}
+DE.13 <- p31
+IE.13 <- p21 * p32
+r13 <- DE.13 + IE.13
+```
+
+$r_{23}$, the correlation between CD and TP has a direct effect and a spurious component: $r_{23} = p_{32} + p_{21}p_{31}$.
+
+```{r}
+DE.23 <- p32
+S.23 <- p21 * p31
+r23 <- DE.23 + S.23
+```
+
+Moving along, $r_{14}$, the correlation between AMB and HI, is the sum of three indirect effects, mediated by CD, TP, and the combination of both CD and TP: $r_{14} = p_{21}p_{42} + p_{31}p_{43} + p_{21}p_{32}p_{43}$.
+
+```{r}
+IE.14 <- p21 * p42 + p31 * p43 + p21 * p32 * p43
+r14 <- IE.14
+```
+
+$r_{24}$ is composed of a direct effect, an indirect effect, and a spurious component.
+
+```{r}
+DE.24 <- p42
+IE.24 <- p32 * p43
+S.24 <- p21 * p31 * p43
+r24 <- DE.24 + IE.24 + S.24
+```
+
+$r_{34}$ is composed of a direct effect and a spurious component. Because the spurious component is solely a result of TP's correlation with CD, I will reuse $r_{23}$.
+
+```{r}
+DE.34 <- p43
+S.34 <- r23 * p42
+r34 <- DE.34 + S.34
+```
+
+$r_{15}$ comprises only an indirect effect. Well, really five indirect effects.
+
+```{r}
+IE.15 <- p31 * p53 + p21 * p42 * p53 + p31 * p43 * p53 + p21 * p32 * p53 + p21 * p32 * p43 * p54
+r15 <- IE.15
+```
+
+$r_{25}$ comprises both an indirect effect and a spurious component.
+
+```{r}
+IE.25 <- p32 * p53 + p42 * p54 + p32 * p43 * p54
+S.25 <- p21 * p31 * p53 + p21 * p31 * p43 * p54
+r25 <- IE.25 + S.25
+```
+
+$r_{35}$ comprises a direct effect, an indirect effect, and a spurious component.
+
+```{r}
+DE.35 <- p53
+IE.35 <- p43 * p54
+S.35 <- r23 * p42 * p54
+r35 <- DE.35 + IE.35 + S.35
+```
+
+$r_{45}$ is the final correlation to decompose. It comprises a direct effect and a spurious component.
+
+```{r}
+DE.45 <- p54
+S.45 <- r34 * p53
+r45 <- DE.45 + S.45
+```
+
+All the components are broken down in the following table.
+
+```{r}
+tbl.2.b <- tibble(Vars = c("AMB, CD",
+                "AMB, TP", "CD, TP",
+                "AMB, HI", "CD, HI", "TP, HI",
+                "AMB, ANX", "CD, ANX", "TP, ANX", "HI, ANX"),
+       r = c(r12, r13, r23, r14, r24, r34, r15, r25, r35, r45),
+       DE = c(DE.12, DE.13, DE.23, NA, DE.24, DE.34, NA, NA, DE.35, DE.45),
+       IE = c(NA, IE.13, NA, IE.14, IE.24, NA, IE.15, IE.25, IE.35, NA),
+       S = c(NA, NA, S.23, NA, S.24, S.34, NA, S.25, S.35, S.45),
+       U = c(rep(NA,10)))
+
+tbl.2.b %>% kable
+```
+
+### c. Fit Assessment
+
+#### Overall Fit
+
+In Theoretical Model A, we have have an "overidentified model" [@pedhazur82, 617] because there are fewer paths in the model than are possible. This is equivalent to saying that the model implicitly hypothesizes no effect of some variables on others.
+
+Specifically, the table above clearly shows that AMB has no direct effect on HI or ANX, and CD has no direct effect on ANX. Thus, in this case, we have three "overidentifying restrictions" [@pedhazur82, 618], which will equal the degrees of freedom in the significance test.
+
+$$d = df = 3$$
+In order to calculate the test statistic, $W$, in addition to $d$, we need the sample size, $N$, the generalized squared multiple correlation, $R^2_m$, and what I call 'Specht's *M*'. Specht's *M* is essentially a rebranded $R^2_m$ for overidentified models @specht75.
+
+The exact formula is Equation 15.21 in [-@pedhazur82, 619]. I present it here with modernized notation:
+
+$$W = - (N - d)\ln{\frac{1 - R^2_m}{1-M}}$$
+$W$ is approximately $\chi^2$-distributed with $df = d$ degrees of freedom.
+
+I will now calculate each variable in turn.
+
+```{r}
+N <- nrow(tbl.2)
+d <- 3
+```
+
+If I understand this correctly, $R^2_m$ is simply the product of (one minus) all the squared observed correlations, less than one.
+
+```{r}
+# Note: Using for loops in R is discouraged, but it's not a big deal for a short vector, 
+# and using nested map() functions is annoying.
+num.2.c <- c()
+for (col in select(correlate(tbl.2), -c(1, 2))) {
+  for (r in col) {
+    if (!is.na(r)) {
+      num.2.c <- c(num.2.c, r)
+    } else {
+      break
+    }
+  }
+}
+
+R2m <- 1 - prod(map_dbl(num.2.c, ~ 1 - . ^ 2))
+```
+
+Finally, I believe Specht's $M$ is calculated in the same way, except by using the reproduced correlations instead of the observed correlations.
+
+```{r}
+M <- 1 - prod(map_dbl(tbl.2.b$r, ~ 1 - . ^ 2))
+```
+
+Now, I can calculate $W$ and test it against a $\chi^2$ distribution.
+
+```{r}
+W <- -(N - d) * log((1 - R2m) / (1 - M))
+p <- dchisq(W, d)
+tibble(W = W, p = p) %>%
+  kable
+```
+
+This result suggests that the model is not a good fit.
+
+#### Correspondence Between Observed and Reproduced Correlations
+
+To compare the observed correlations and the reproduced correlations, we can simply start by taking the differences.
+
+```{r}
+tbl.2.c <- tbl.2.b %>%
+  select(c(1,2)) %>%
+  rename(Reproduced = r) %>%
+  mutate(Observed = num.2.c, .after = Vars) %>%
+  mutate(Difference = Observed - Reproduced)
+
+tbl.2.c %>%
+  kable
+```
+
+It appears that for all the pairs of variables with direct effects, the difference between the observed and reproduced correlations is infinitesimally small. I'm not sure what to make of that. It may simply be a result of those relationships being identified. The differences for the variables without direct effects are larger, but without a significance test, it's difficult to say how much credence to lend the differences.
+
+Although we are not talking about correlations from two samples, it might be worth doing a Fisher $r$-to-$z$ transformation and checking whether those three correlations are significantly different.
+
+```{r}
+tbl.2.c %>%
+  select(- "Difference") %>%
+  mutate(z = paired.r(Observed, Reproduced, n = nrow(tbl.2))$z,
+         p = paired.r(Observed, Reproduced, n = nrow(tbl.2))$p) %>%
+  kable
+```
+ If I did this right, then none of the three are even remotely significantly different.
+
+### d. Hypotheses
+
+Tested as a whole, Theoretical Model A did not perform well. It did not explain enough additional variance vs. an identified model to justify the additional constraints.
+
+The tests of individual correlations tell the same story. Constraining the three pairs of variable to indirect paths did not lead to improved reproduced correlations vs. the observed correlations.
+
+Thus, we *cannot* conclude that the omitted paths should be rejected from the model.
+
+### e. Reliabilities
+
+I'm sure we will find out exactly what implications reliabilities have when we move onto SEM and include a measurement model. For now, suffice it to say that these relatively low scores imply that an assumption of path analysis may have been violated [@pedhazur82, 633].
+
+My guess is that in this case, the low reliabilities are more likely to bias the effect sizes downward, but without more information about the measures, it's difficult to say.
+
+### f. Conclusions
+
+I'm going to go out on a limb and say "ambition" is related to "competitive drive" and "time pressure" is related to "hurried/impatient", although I hardly think we needed this study to tell us that. Each is, if not synonymous, then at least closely semantically related to the other. But the data do bear those relationships out.
+
+Overall, I don't think this analysis lends Theoretical Model A much support.
+
+## 3. Path Analysis of Theoretical Model B
+
+Theoretical Model B resolves one of my complaints, namely that ambition did not seem so much like a cause of competitive drive as a conceptually-related construct. Let's see if that makes a difference.
+
+### a. Path Coefficients
+
+With the exception of $p_{21}$'s theoretical replacement with $r_{12}$ (which has the identical value), all the path coefficients remain the same to those in Part 2. Therefore, please refer to Part 2.a for the path coefficients.
+
+However, as we shall see in a moment, the decomposed correlations will be different because some previously analyzed components will no longer be so.
+
+### b. Decomposed Correlations
+
+I will go in the same order as before.
+
+$r_{12}$ is simply the unanalyzed "path" between AMB and CD, represented by a correlation.
+
+```{r}
+# this seems almost absurdly unnecessary, but I'm including it for the sake
+# of completeness
+U.12 <- r12
+r12 <- U.12
+```
+
+$r_{13}$ includes the direct effect of AMB on TP and an unanalyzed component for the effect of CD on TP.
+
+```{r}
+DE.13 <- p31
+U.13 <- p32 * r12
+r13 <- DE.13 + U.13
+```
+
+Likewise, $r_{23}$ comprises a direct effect of CD on TP and an unanalyzed component for the effect of AMB on TP.
+
+```{r}
+DE.23 <- p32
+U.23 <- p31 * r12
+r23 <- DE.23 + U.23
+```
+
+Moving along, $r_{14}$ comprises an indirect effect and an unanalyzed component.
+
+```{r}
+IE.14 <- p31 * p43
+U.14 <- (p42 + p32 * p43) * r12
+r14 <- IE.14 + U.14
+```
+
+So many unanalyzed components! $r_{24}$ comprises a direct effect, an indirect effect, and an unanalyzed component.
+
+```{r}
+DE.24 <- p42
+IE.24 <- p32 * p43
+U.24 <- p31 * p43 * r12
+r24 <- DE.24 + IE.24 + U.24
+```
+
+Next, $r_{34}$ has a direct effect, a spurious component (thanks to the common cause of CD), and an unanalyzed component.
+
+```{r}
+DE.34 <- p43
+S.34 <- p32 * p42
+U.34 <- p31 * p42 * r12
+r34 <- DE.34 + S.34 + U.34
+```
+
+Getting close... $r_{15}$ is composed of an indirect effect and an unanalyzed component.
+
+```{r}
+IE.15 <- p31 * p53 + p31 * p43 * p54
+U.15 <- (p32 * p53 + p42 * p53 + p32 * p43 * p54) * r12
+r15 <- IE.15 + U.15
+```
+
+$r_{25}$ is similarly composed of an indirect effect and an unanalyzed component. The $r_{12}$ is simply switched.
+
+```{r}
+IE.25 <- p32 * p53 + p42 * p54 + p32 * p43 * p54
+U.25 <- (p31 * p53 + p31 * p43 * p54) * r12
+r25 <- IE.25 + U.25
+```
+
+Almost there... $r_{35}$ comprises a direct effect, an indirect effect, a spurious component, *and* an unanalyzed component. Wow!!!!
+
+```{r}
+DE.35 <- p53
+IE.35 <- p43 * p54
+S.35 <- p32 * p42 * p54
+U.35 <- p31 * p42 * p54 * r12
+r35 <- DE.35 + IE.35 + S.35 + U.35
+```
+
+Last and arguably least, $r_{45}$ comprises a direct effect, a spurious component, and an unanlyzed component.
+
+```{r}
+DE.45 <- p54
+S.45 <- p42 * p32 * p53 + p43 * p53
+U.45 <- (p42 + p32 * p43) * (p31 * p53) * r12
+r45 <- DE.45 + S.45 + U.45
+```
+
+As before, I've broken down all the components in a single table.
+
+```{r}
+tbl.3.b <- tibble(Vars = c("AMB, CD", "AMB, TP", "CD, TP",
+                           "AMB, HI", "CD, HI", "TP, HI",
+                           "AMB, ANX", "CD, ANX", "TP, ANX", "HI, ANX"),
+       r = c(r12, r13, r23, r14, r24, r34, r15, r25, r35, r45),
+       DE = c(NA, DE.13, DE.23, NA, DE.24, DE.34, NA, NA, DE.35, DE.45),
+       IE = c(NA, IE.13, NA, IE.14, IE.24, NA, IE.15, IE.25, IE.35, NA),
+       S = c(NA, NA, NA, NA, NA, S.34, NA, NA, S.35, S.45),
+       U = c(U.12, U.13, U.23, U.14, U.24, U.34, U.15, U.25, U.35, U.45))
+
+tbl.3.b %>% kable
+```
+
+### c. Fit Assessment
+
+
+#### Overall Fit
+
+I will attempt to use the same procedures as before. But first, it is necessary to determine whether the proposed correlation (and not causation) between AMB and CD constitutes an overidentifying restriction. [@pedhazur82], to my reading, is ambiguous on this point. Instead, I relied on [@kaplan09]'s explication of Kenneth Bollen's *counting rule*. This clarifies that the correlation between exogenous variables is not parameterized. Thus, the correlation is an overidentifying restriction, and $d$ increases from 3 to 4.
+
+```{r}
+d <- 4
+```
+
+$N$ remains the same at 211. However, I believe the values of $R^2_m$ and Specht's $M$ will have changed.
+
+Repurposing my code from earlier (another R "no-no"):
+
+```{r}
+num.3.c <- c()
+for (col in select(correlate(tbl.2), -c(1, 2))) {
+  for (r in col) {
+    if (!is.na(r)) {
+      num.3.c <- c(num.3.c, r)
+    } else {
+      break
+    }
+  }
+}
+
+R2m <- 1 - prod(map_dbl(num.3.c, ~ 1 - . ^ 2))
+
+M <- 1 - prod(map_dbl(tbl.3.b$r, ~ 1 - . ^ 2))
+
+W <- -(N - d) * log((1 - R2m) / (1 - M))
+
+p <- dchisq(W, d)
+
+tibble(W = W, p = p) %>%
+  kable
+```
+
+The result is that $W$ is lower than before, but it is still not statistically significant.
+
+#### Correspondence Between Observed and Reproduced Correlations
+
+At this point, I will check whether the reproduced correlations for the three restricted paths (not including the correlation between AMB and CD) are significantly different from the observed correlations.
+
+```{r}
+tbl.2.b %>%
+  select(c(1,2)) %>%
+  rename(Reproduced = r) %>%
+  mutate(Observed = num.2.c, .after = Vars) %>%
+  mutate(z = paired.r(Observed, Reproduced, n = nrow(tbl.2))$z,
+         p = paired.r(Observed, Reproduced, n = nrow(tbl.2))$p) %>%
+  kable
+```
+
+Once again, the reproduced correlations are not significantly different from the observed correlations.
+
+### d. Hypotheses
+
+Theoretical Model B may have performed better than Theoretical Model A, but not sufficiently to be able to say that it performed well. The overall fit assessment found it be a non-significant improvement on the identified model. And the reproduced correlations in Theoretical Model B were identical to those in Theoretical Model A (this is worrying to me, but I can't see how I might have made a mistake in calculating the reproduced correlations).
+
+### e. Conclusions
+
+Because Theoretical Model B did perform (if nonsignficantly, at least directionally) better than Theoretical Model A, I will take it at face value that the respecification of the relationship between AMB and CD is justified. In other words, it's better to say that ambition and competitive drive are correlated than that ambition causes competitive drive.
+
+However, I can't help but wonder if a Theoretical Model C in which the relationship between time pressure and hurried/impatient were respecified might perform even better. The two seem closely related, and although we generally conceive of cognitive states as leading to behaviors, I imagine that the measures do not precisely distinguish between the two.
+
+## References
+
+```{r results = "hide"}
+bbt_write_bib("biblio.json", c("pedhazur82", "specht75", "kaplan09"), overwrite = TRUE)
+```
+
