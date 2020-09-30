@@ -12,7 +12,7 @@ HW #6: Categorical Dependent Variables
 
 [HW #9: Mediation](hw/hw9.html)
 
-HW #10: [Path Analysis](hw/hw10.html)
+[HW #10: Path Analysis](hw/hw10.html)
 
 HW #11: Structural Equation Modeling I
 
