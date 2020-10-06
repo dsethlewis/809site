@@ -1,0 +1,41 @@
+---
+title: 'HW #12: SEM II'
+author: "Daniel Lewis"
+date: "9/30/2020"
+output: 
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github
+bibliography: biblio.json
+csl: "../apa.csl"
+---
+
+## Load Packages
+
+```{r message = F, warning = F}
+# Projects
+library(here)
+
+# R Markdown
+library(knitr)
+library(rbbt)
+
+# Statistics
+library(psych)
+
+# Tidyverse
+library(readxl)
+library(tidyverse)
+library(broom)
+library(glue)
+library(corrr)
+```
+
+## 2.
+
+## References
+
+```{r results = "hide"}
+# bbt_write_bib("biblio.json", bbt_detect_citations("hw12.Rmd"), overwrite = TRUE)
+```
+
