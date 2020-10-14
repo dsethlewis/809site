@@ -21,6 +21,7 @@ library(rbbt)
 
 # Statistics
 library(psych)
+library(lavaan)
 
 # Tidyverse
 library(readxl)
@@ -28,9 +29,65 @@ library(tidyverse)
 library(broom)
 library(glue)
 library(corrr)
+library(modelr)
+library(rlang)
+library(holodeck)
 ```
 
+## Import Data
+
+```{r}
+tbl <- read_excel(here('data', 'AMBSTD.xlsx'))
+```
+
+
 ## 2.
+
+```{r}
+mtx.2.a <- cor(tbl)
+
+num.2.a <- c(.663,.793,.631,.629,.745)
+
+num.2.b <- correct.cor(mtx.2.a,num.2.a) %>%
+  set_diag(1) %>%
+  t %>%
+  .[lower.tri(., diag = TRUE)]
+
+mtx.2.b <- getCov(num.2.b, lower=FALSE,
+                     names = c("amb","cd","tp","hi","anx"))
+mtx.2.b
+
+chr.2.b <- '
+  # regressions
+    cd ~ amb
+    tp ~ amb + cd
+    hi ~ tp + cd
+    anx ~ tp + hi
+'
+fit.2.a <- sem(chr.2.b, sample.cov = mtx.2.b, sample.nobs = 211)
+summary(fit.2.a)
+
+chr.2.c <- '
+  # regressions
+    cd ~ amb
+    tp ~ amb + cd
+    hi ~ amb + cd + tp
+    anx ~ amb + cd + tp + hi
+'
+fit.2.b <- sem(chr.2.c, sample.cov = mtx.2.b, sample.nobs = 211)
+summary(fit.2.b)
+```
+
+## 3.
+
+```{r}
+fit.3 <- sem(fit.2.a, tbl)
+summary(fit.3)
+```
+
+## 4. 
+
+
 
 ## References
 
