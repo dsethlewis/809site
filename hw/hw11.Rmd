@@ -9,7 +9,10 @@ output:
 bibliography: biblio.json
 csl: "../apa.csl"
 ---
+
 ## Load Packages
+
+I will use the R package `lavaan` to estimate the models @rosseel12 . This is the most popular SEM package for R, and from what I can tell, is considered to work similarly well to LISREL and M*plus* or the built-in modules in SAS, Stata, and SPSS. I prefer it because it allows me to continue to practice learning R instead of having to start over from scratch with a new statistical package. But, where I can, I will check my results from `lavaan` against the results provided from LISREL.
 
 ```{r message = F, warning = F}
 # Projects
@@ -26,11 +29,6 @@ library(lavaan)
 # Tidyverse
 library(readxl)
 library(tidyverse)
-library(broom)
-library(glue)
-library(corrr)
-library(modelr)
-library(rlang)
 library(holodeck)
 ```
 
@@ -40,8 +38,27 @@ library(holodeck)
 tbl <- read_excel(here('data', 'AMBSTD.xlsx'))
 ```
 
+## 2. Structural Model with Disattenuated Correlations
 
-## 2.
+### Disattenuated Correlations
+
+Looks like the first step is to calculate disattenuated correlations. I'll do the first one by hand(ish) and then use the built in `correct.cor()` function from the popular `psych` package to do the remaining ones.
+
+The general equation, pulled from the syllabus, is: $\phi_{12}= \frac{r_{12}}{\sqrt{\alpha_1}\sqrt{\alpha_2}}$. So I need the (attenuated) correlation and the reliabilities for each variable.
+
+```{r}
+cor(tbl$amb, tbl$cd)
+```
+
+The reliabilities for AMB and CD are given and are approximately .663 and .793, respectively.
+
+Then, $\phi_{AMB, CD} = \frac{r_{AMB, CD}}{\sqrt{\alpha_{AMB}}\sqrt{\alpha_{CD}}} \approx \frac{.551}{\sqrt{.663} \times \sqrt{.793}}$.
+
+```{r}
+.551 / (sqrt(.663) * sqrt(.793)) %>%
+  round(3)
+```
+Now let's see if that lines up with the results of the `correct.cor()` function.
 
 ```{r}
 mtx.2.a <- cor(tbl)
@@ -53,9 +70,28 @@ num.2.b <- correct.cor(mtx.2.a,num.2.a) %>%
   t %>%
   .[lower.tri(., diag = TRUE)]
 
+chr.2.a <- c("amb","cd","tp","hi","anx")
+
 mtx.2.b <- getCov(num.2.b, lower=FALSE,
-                     names = c("amb","cd","tp","hi","anx"))
-mtx.2.b
+                     names = chr.2.a)
+
+options(knitr.kable.NA = "")
+mtx.2.c <- mtx.2.b
+mtx.2.c[upper.tri(mtx.2.c)] <- as.numeric("")
+mtx.2.c %>%
+  kable(digits = 3)
+```
+
+Great, that matches perfectly.
+
+### Theoretical Model A
+
+If I understand correctly, the next step is to estimate a structural model, except instead of using the raw data from the path analysis assignment to compute regressions one-by-one, I now use the disattenuated correlation matrix to estimate a system of equations at once using SEM.
+
+Before I can use the `sem()` function from the `lavaan` package, I need to specify the model with a series of formulas corresponding to the system of regression equations from the path analysis procedure.
+
+```{r}
+options(knitr.kable.NA = "NA")
 
 chr.2.b <- '
   # regressions
@@ -64,9 +100,51 @@ chr.2.b <- '
     hi ~ tp + cd
     anx ~ tp + hi
 '
-fit.2.a <- sem(chr.2.b, sample.cov = mtx.2.b, sample.nobs = 211)
-summary(fit.2.a)
+```
 
+Before proceeding, I will verify that `sem()` produces the same results as path analysis when using the raw data. If it does, I can feel confident using it with the disattenuated correlation matrix.
+
+```{r}
+mtx.2.d <- mtx.2.a %>%
+  set_diag(1) %>%
+  t %>%
+  .[lower.tri(., diag = TRUE)] %>%
+  getCov(lower = F, names = chr.2.a)
+  
+fit.2.a <- sem(chr.2.b, sample.cov = mtx.2.d, sample.nobs = 211)
+fit.2.a %>%
+  parameterEstimates %>%
+  kable
+```
+
+These results are approximately identical to my results from [section 2a in HW #10](https://dsethlewis.github.io/809site/hw/hw10.html#a.-path-coefficients). I feel safe to continue.
+
+Using the same model specification&mdash;but now with the disattenuated correlations&mdash;I will re-estimate the model.
+
+```{r}
+fit.2.b <- sem(chr.2.b, sample.cov = mtx.2.b, sample.nobs = 211)
+
+fit.2.b %>%
+parameterEstimates %>%
+  kable
+```
+
+At a glance, it looks like all the parameter estimates are higher in the model with disattenuated correlations, but let's just check quickly.
+
+```{r}
+parameterEstimates(fit.2.b)$est[1:7] - parameterEstimates(fit.2.a)$est[1:7]
+```
+Interesting, good thing I checked! Four of the seven path coefficients increased  by using the disattenuated correlations, but three of the seven decreased. That said, the three that decreased only did so by small fractions, while the the four that increased did so substantially. So my original analysis was approximately correct.
+
+Clearly using the disattenuated correlations affected the results. And it makes sense to me that disattenuating the correlations would increase the effect sizes. What's not as clear to me is why disattenuating correlations is epistemically valid. If the variables have measurement error, shouldn't that change only our confidence in the results (e.g., standard errors)? I don't see why we should be able to increase effect sizes.
+
+Putting philosophical considerations aside, I will continue on to the next model.
+
+### Saturated Model
+
+In a saturated model, every variable is supposed to have every 'upstream' variable as a direct predictor @pedhazur82 . For example, in Theoretical Model A, AMB is hypothesized to predict HI *via* CD and TP, but in a saturated version, AMB would predict HI directly.
+
+```{r}
 chr.2.c <- '
   # regressions
     cd ~ amb
@@ -74,24 +152,144 @@ chr.2.c <- '
     hi ~ amb + cd + tp
     anx ~ amb + cd + tp + hi
 '
-fit.2.b <- sem(chr.2.c, sample.cov = mtx.2.b, sample.nobs = 211)
-summary(fit.2.b)
+fit.2.c <- sem(chr.2.c, sample.cov = mtx.2.b, sample.nobs = 211)
+
+fit.2.c %>%
+  parameterEstimates %>%
+  kable
 ```
 
-## 3.
+Saturating the model generated parameter estimates for the effects of AMB on HI and ANX and for the effect of CD on ANX. This seems analogous to the [decomposition of correlations in HW #10](https://dsethlewis.github.io/809site/hw/hw10.html#b.%20Decomposed%20Correlations) into indirect effects, but because I am using the disattenuated correlations here, it doesn't really make sense to compare the results.
+
+Anyway, the results suggest that perhaps the relationship between CD and ANX *could* be included (if founded in theory), as the effect is significant.
+
+## 3. Structural Equation Modeling with Observed Variables
+
+I'm a little confused by the instructions for this section, because it seems exactly the same as what I did in the previous step. But I think the point is to compare the output of SEM with the the output of a series of regression equations. So in this step, I will output the full summary of the fitted model for Theoretical Model A instead of just the parameter estimates.
 
 ```{r}
-fit.3 <- sem(fit.2.a, tbl)
-summary(fit.3)
+fit.2.a %>%
+  summary
+```
+OK, let's take a look at the output. First, we see that the software was able to execute properly. It used an iterative estimating method called maximum likelihood (ML) and found an optimal solution in 13 tries. It found 11 parameters to estimate, corresponding to seven path coefficients and four variances.
+
+In the next section, the output tells us that the overall fit of the model was not significant ($p>.05$). `lavaan` uses the basic chi-square test statistic. We probably do not want to rely wholly on this test statistic, so I will come back to test statistics in a moment.
+
+In the regressions section, we see the exact same output as from the series of regressions in path analysis. These are the $\beta$'s in regression notation, $p$'s in path analysis notation, and the $\gamma$'s and $\beta$'s in SEM notation @pedhazur_schmelkin91 .
+
+The variances are simply the variances of the endogenous variables. In SEM, these are referred to as disturbances, are represented as $\zeta$'s, and would be found in the PSI matrix in LISREL.
+
+While the basic `lavaan` summary output does not provide additional test statistics, such as RMSEA or CFI, they can easily be called with `summary(fit, fit.measures = TRUE)` or, more completely, with `fitMeasures(fit)`.
+
+```{r}
+summary(fit.2.a, fit.measures = T)
 ```
 
-## 4. 
+Overall, I think we have to say this is a pretty weak model.
 
+Like LISREL, `lavaan` can also produce estimates for the covariances of structural variables (`vcov()`), $R^2$ for structural equations (`summary(fit, rsquare = TRUE)`), fitted values and residuals (`fitted.values()`, `resid(fit, type = standardized)`), a standardized solution (`standardizedSolution()`), and modification indices (`modIndices()`). I won't go through all of them with this model, so suffice it to say for now that `lavaan` provides the information.
 
+## 4. Structural Equation Modeling with Corrections for Measurement Error
+
+### SEM with Disattenuated Correlations
+
+I understand this model to be equivalent to the structural model computed in [section 2](#theoretical-model-a), except we will now look at the additional information provided by the SEM procedure.
+
+I will go in order of the assignment.
+
+#### Model fit
+
+I'm going to keep it simple and only look at $\chi^2$, RMSEA, and the Tucker-Lewis Index (TLI):
+
+```{r}
+fitMeasures(fit.2.b, fit.measures = c("chisq", "df", "pvalue", "rmsea", "tli")) %>%
+  kable
+```
+
+The $\chi^2$ statistic looks good with a $p$-value less than .001. But an RMSEA of 0.13 is unacceptably high and a TLI of .93 is considered marginal @kenny20 . Overall, I'm getting mixed signals on the goodness of fit.
+
+This might be a good time to compare the results from `lavaan` with those from LISREL for this model. LISREL does not report the TLI, but the $\chi^2$ and RMSEA values are within rounding distance of each other. 13.183 vs. 13.166 and 0.127 vs. 0.124. That gives me confidence that `lavaan` is working as expected.
+
+#### Parameter Estimates
+
+This really should be identical to the analysis of the structural model in [section 2](#theoretical-model-a), so I won't reproduce the table. But looking back at it, all the estimates are significant and positive, as hypothesized.
+
+I checked the LISREL output again for correspondence, and this time the results are identical.
+
+### SEM with Latent Variables
+
+This model does not incorporate any additional information beyond the previous model, so I don't expect it to diverge dramatically, but the different statistical procedure may produce some artifacts.
+
+I'm going to make an attempt to reproduce the analysis in R using `lavaan`, but if I can't figure it out, I'll fall back on the LISREL output provided.
+
+```{r, results=F}
+# Loadings
+sqrt(num.2.a)
+
+# Error Variances
+1 - num.2.a
+
+# Model specification
+chr.2.d <- '
+  # measurement model
+    amb_xi =~ .814*amb
+    cd_eta =~ .890*cd
+    tp_eta =~ .794*tp
+    hi_eta =~ .793*hi
+    anx_eta =~ .863*anx
+  # regressions
+    cd_eta ~ amb_xi
+    tp_eta ~ amb_xi + cd_eta
+    hi_eta ~ tp_eta + cd_eta
+    anx_eta ~ tp_eta + hi_eta
+  # fix error variances
+    amb ~~ .337*amb
+    cd ~~ .207*cd
+    tp ~~ .369*tp
+    hi ~~ .371*hi
+    anx ~~ .255*anx
+'
+```
+
+I think I may have actually done that right! I honestly wasn't sure I'd be able to pull it off. Let's test it.
+
+```{r}
+fit.4 <- sem(chr.2.d, sample.cov = mtx.2.d, sample.nobs = 211)
+
+summary(fit.4)
+```
+
+I'm seeing a $\chi^2$ of about 5.17 in the R version and a $\chi^2$ of about 5.12 in the LISREL version. That's pretty close, no? I'm going to proceed with the R version.
+
+#### Model Fit
+
+We've already seen the $\chi^2$ is non-significant ($p>0.1$), but let's check the RMSEA and TLI, as before.
+
+```{r}
+fitMeasures(fit.4, fit.measures = c("rmsea", "tli")) %>%
+  kable
+```
+
+OK, now we're cooking with gas! An RMSEA of .06 is not bad, and a TLI of .96 is considered good @kenny20 . Overall, I think we have to conclude that this model fits the data better than the model that simply used disattenuated correlations.
+
+#### Parameter Estimates
+
+```{r}
+parameterEstimates(fit.4, remove.nonfree = T) %>%
+  kable
+```
+
+The effect estimates are all positive but *definitely* not all significant. CD is not significantly predictive of either TP or HI, and TP is not significantly predictive of ANX.
+
+### Conclusions
+
+The latent-variable model performed the best in terms of overall model fit, but not all its paths were significant. That hardly gives me confidence. The disattenuated-correlations model was mediocre for overall model fit, but the parameter estimates matched the theory. That's a mixed bag. And the raw-data structural model had strong TLI and RMSEA values, but we know that one is flawed because the reliabilities are low.
+
+The bigger picture is that different statistical procedures that all incorporate the same information are producing different results, and I find that worrisome. I don't really understand what's going on under the hood well enough to say why it's happening, but overall, I do not have confidence in Theoretical Model A.
 
 ## References
 
 ```{r results = "hide"}
-# bbt_write_bib("biblio.json", bbt_detect_citations("hw11.Rmd"), overwrite = TRUE)
+bbt_write_bib("biblio.json", bbt_detect_citations("hw11.Rmd"), overwrite = TRUE)
 ```
 
