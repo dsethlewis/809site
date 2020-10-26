@@ -19,23 +19,187 @@ library(here)
 # R Markdown
 library(knitr)
 library(rbbt)
+library(kableExtra)
 
 # Statistics
 library(psych)
+library(lavaan)
 
 # Tidyverse
-library(readxl)
+library(haven)
 library(tidyverse)
-library(broom)
-library(glue)
-library(corrr)
+library(magrittr)
 ```
 
-## 2.
+## 1. Intercorrelated Measurement Model
+
+### Modeling in R
+
+First, I need to import the covariance matrix for the items. I will also clean it up a bit.
+
+Note: I need to take the absolute value of the data because `lavaan` does not accept negative values in its sample covariance matrices. I believe this should not affect the results by destroying information.
+
+```{r}
+tbl.1 <- read_dta(here('data', 'ambcori.dta'))
+
+tbl.1 <- tbl.1[3:length(tbl.1)] %>%
+  filter(!is.na(amb1)) %>%
+  abs
+```
+
+I believe the SEM measurement model is equivalent to a CFA, so I may need to use the `cfa()` function in place of `sem()` to reproduce the LISREL/Stata analysis.^[I looked it up. `sem()` would work identically.] 
+
+I will also standardize the factors to a mean of zero and a variance of one. That's my understanding of what `PH=ST` in LISREL and `var(AMB@1 CD@1 TP@1 HI@1 ANX@1)` in Stata are doing. It also allows `lavaan` to estimate loadings for the first item in each factor instead of using those items as scales.
+
+```{r, warning=FALSE}
+mtx.1 <- tbl.1 %>%
+  as.matrix %>%
+  set_rownames(colnames(.))
+
+chr.1 <- '
+    # measurement
+    amb =~ amb1 + amb2 + amb3 + amb4 + amb5
+    cd =~ cd1 + cd2 + cd3 + cd4
+    tp =~ tp1 + tp2 + tp3 + tp4 + tp5
+    hi =~ hi1 + hi2 + hi3 + hi4 + hi5 + hi6
+    anx =~ anx1 + anx2 + anx3 + anx4 + anx5 + anx6 + anx7 + anx8
+'
+
+fit.1 <- cfa(chr.1, sample.cov = mtx.1, sample.nobs = 211, std.lv = T)
+```
+
+As a spot test, I'm going to check whether the $\chi^2$ for the R model matches that of the LISREL model.
+
+```{r}
+fitMeasures(fit.1, "chisq")
+```
+
+Oy, that does not match the $\chi^2 \approx 605$ in the LISREL output. But it's kind of close. I'll check the RMSEA.
+
+```{r}
+fitMeasures(fit.1, "rmsea")
+```
+That's also close, but not exactly right. OK, here's what I'm going to do. I will proceed with the analysis using the results in R but continue to check them against the LISREL output for now.
+
+### Item Loadings
+
+```{r}
+tbl.1.a <- fit.1 %>%
+  parameterEstimates(ci = F)
+
+tbl.1.a %>%
+  filter(op == "=~") %>%
+  kable
+```
+
+First, the item loadings are approximately the same to those in LISREL, albeit not identical.
+
+Second, all the item loadings are significant across the board.
+
+Third, however, some of the loadings are worryingly low. TP5 loads on TP with just .18 and ANX2 loads on ANX with just .26.
+
+TP5 is "Faced with daily deadlines at work", while most of the other TP items refer to time pressure *outside* of work. There may be an issue with that.
+
+ANX2 is "Felt as though I might faint", which is both in a different tense than the other items (past vs. present) and is less a core symptom of anxiety than the other items (cf. "upset", "restless", "panicky"). Thus, it's also possible to reason why there might be an issue with that item.
+
+Overall, frankly, few factor loadings exceed the common .7 rule-of-thumb. All these factors and loadings should therefore be interpreted with a grain of salt.
+
+### Factor Correlations
+
+```{r}
+chr.1.a <- c("amb", "cd", "tp", "hi", "anx")
+
+tbl.1.a %>%
+  filter(op == "~~", lhs %in% chr.1.a, lhs != rhs) %>%
+  kable
+```
+
+Again, the estimates produced by R are similar, but not identical to, the estimates produced by LISREL. At this point, I will assume that trend continues and focus on the R output from here on.
+
+Our model supposes that, whether through direct or indirect effects, every variable is correlated with every other. The estimates of factor correlations mostly bear that out. With the possible exception of CD and ANX ($\phi_{CD, ANX} \approx .14, p < .1$), every pair of factors is significantly correlated. In addition, AMB and ANX are only weakly correlated ($\phi_{AMB, ANX}\approx.21, p < .05$). But AMB and CD are theoretically most distal from ANX in the model, so this is not really a problem.
+
+We will have to see what happens when these factors are formally introduced to each other in the structural model.
+
+### Modification Indices
+
+Modification indices (MIs) are 'what if' tests: "an MI reflects the improvement in model fit that would result if a previously omitted parameter were to be added and freely estimated" [@curran-baueranalytics19]. There are as many MIs for a model as excluded parameters. In our case, the MIs are mostly loadings on other factors&mdash;for instance, AMB3's loading on HI. What's interesting, then, are the items that, when loaded on a different factor, improve the model significantly. MIs represent potential changes in $\chi^2$, so larger values imply a larger $\chi^2$ and improved model fit.
+
+There are nearly 500 modification indices, so I truncated the full results to just a list of the 10 largest factor loadings in rank order.
+
+```{r}
+fit.1 %>%
+  modificationIndices(sort. = T, op = "=~") %>%
+  head(10) %>%
+  kable
+```
+
+HI1, HI3, HI4 appear to not belong in HI! Let's take a look at the items:
+
+- HI1: Always rushed
+- HI3: Act immediately under pressure
+- HI4: Always hurry
+
+The MIs show that HI1 may belong TP. HI1 conceptually does seem to fit in TP because it's in the form of a participle adjective, whereas HI is conceived as behavior.
+
+HI3 may also belong in TP for the obvious reason that it says "under PRESSURE", which not-so-gently reminds me of "time PRESSURE".
+
+HI4 may belong in ANX according to its MI, but I don't see an obvious reason why. This may be a case where the MI suggests a change that's not supported by theory.
+
+### Residuals
+
+```{r}
+mtx.1.a <- resid(fit.1)$cov
+
+mtx.1.a %>%
+  kable(digits = 3, row.names = T) %>%
+  kable_styling(font_size = 13) %>%
+  scroll_box(width = "100%", height = "500px",
+             fixed_thead = list(enabled = T, background = "#63a0e1"))
+```
+
+What I would be curious to see here is whether any of the residuals represent statistically significant changes. The largest residual is for the correlation between HI6 and TP5. I'm just going to do a quick paired-r test using Fisher r-to-z transformations on the observed and predicted values for this correlation.
+
+```{r}
+fun.1 <- function(var1, var2) {
+  r <- mtx.1[var1, var2]
+  t <- paired.r(r, r + mtx.1.a[var1, var2], n = 211)
+  print(str_glue("z: {round(t$z, 3)}, p: {round(t$p, 3)}"))
+}
+
+fun.1("tp5", "hi6")
+```
+Right, so that's a significant change, as expected for a residual over .2. TP5 is "Faced with daily deadlines at work" and HI6 is "Hurry more than others". A high residual means that the factors these items are loading on are more correlated than the items themselves. And I think that's not surprising in this case; time pressure and hurried/impatient behavior seem conceptually related to me while deadlines at work and hurrying more than others are not closely related.
+
+Why don't we look at one more before moving on? I'll take a low residual to see how that translates into fit between loadings and factors. CD2 and ANX3 have a residual of just .021. I doubt that's significantly significant, but, oh, what the heck.
+
+```{r}
+fun.1("cd2", "anx3")
+```
+Nope. Just nope.
+
+Now let's look at the items. CD2 is "Hard-driving and competitive when younger", and ANX3 is "Feel uneasy and restless". The items are not closely related, and the correlation between them reflects that. And we already know that the correlation between CD and ANX is relatively low. Two low correlations produce a low residual. Makes sense to me.
+
+However, I do wonder if there is a floor effect in play. What I mean is, are two low correlations going to have a smaller difference than two high correlations? Since correlations are coefficients in linear equations with (assumed) constant variance, I really don't think it should be an issue.
+
+### Model Fit
+
+Before we put this model away for a bit, let's look at its overall fit. As with the models in the previous assignment, I'll pull up the $\chi^2$, RMSEA, and TLI.
+
+```{r}
+fitMeasures(fit.1, fit.measures = c("chisq", "df", "pvalue", "rmsea", "tli")) %>%
+  round(3) %>%
+  kable(align = "l")
+```
+
+Good $\chi^2$, so-so RMSEA, and an unacceptably low TLI. I'm going to call it a poor model. My hopes were not very high after seeing some of the issues above, so I'm not surprised. Oh well.
+
+## 2. Orthogonal Measurement Model
+
+
 
 ## References
 
 ```{r results = "hide"}
-# bbt_write_bib("biblio.json", bbt_detect_citations("hw12.Rmd"), overwrite = TRUE)
+bbt_write_bib("biblio.json", bbt_detect_citations("hw12.Rmd"), overwrite = TRUE)
 ```
 

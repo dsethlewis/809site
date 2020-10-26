@@ -31,6 +31,201 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+<script>$(document).ready(function(){
+    if (typeof $('[data-toggle="tooltip"]').tooltip === 'function') {
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+    if ($('[data-toggle="popover"]').popover === 'function') {
+        $('[data-toggle="popover"]').popover();
+    }
+});
+</script>
+<style type="text/css">
+.lightable-minimal {
+border-collapse: separate;
+border-spacing: 16px 1px;
+width: 100%;
+margin-bottom: 10px;
+}
+.lightable-minimal td {
+margin-left: 5px;
+margin-right: 5px;
+}
+.lightable-minimal th {
+margin-left: 5px;
+margin-right: 5px;
+}
+.lightable-minimal thead tr:last-child th {
+border-bottom: 2px solid #00000050;
+empty-cells: hide;
+}
+.lightable-minimal tbody tr:first-child td {
+padding-top: 0.5em;
+}
+.lightable-minimal.lightable-hover tbody tr:hover {
+background-color: #f5f5f5;
+}
+.lightable-minimal.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-classic {
+border-top: 0.16em solid #111111;
+width: 100%;
+margin-bottom: 10px;
+margin: 10px 5px;
+}
+.lightable-classic caption {
+color: #222222;
+}
+.lightable-classic td {
+padding-left: 5px;
+padding-right: 5px;
+color: #222222;
+}
+.lightable-classic th {
+padding-left: 5px;
+padding-right: 5px;
+font-weight: normal;
+color: #222222;
+}
+.lightable-classic thead tr:last-child th {
+border-bottom: 0.10em solid #111111;
+}
+.lightable-classic tbody tr:last-child td {
+border-bottom: 0.14em solid #111111;
+}
+.lightable-classic.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-classic.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-classic-2 {
+border-top: 3px double #111111;
+width: 100%;
+margin-bottom: 10px;
+}
+.lightable-classic-2 caption {
+color: #222222;
+}
+.lightable-classic-2 td {
+padding-left: 5px;
+padding-right: 5px;
+color: #222222;
+}
+.lightable-classic-2 th {
+padding-left: 5px;
+padding-right: 5px;
+font-weight: normal;
+color: #222222;
+}
+.lightable-classic-2 tbody tr:last-child td {
+border-bottom: 3px double #111111;
+}
+.lightable-classic-2 thead tr:last-child th {
+border-bottom: 1px solid #111111;
+}
+.lightable-classic-2.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-classic-2.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-material {
+min-width: 100%;
+white-space: nowrap;
+table-layout: fixed;
+font-family: Roboto, sans-serif;
+border: 1px solid #EEE;
+border-collapse: collapse;
+margin-bottom: 10px;
+}
+.lightable-material th {
+height: 56px;
+padding-left: 16px;
+padding-right: 16px;
+}
+.lightable-material td {
+height: 52px;
+padding-left: 16px;
+padding-right: 16px;
+border-top: 1px solid #eeeeee;
+}
+.lightable-material.lightable-hover tbody tr:hover {
+background-color: #f5f5f5;
+}
+.lightable-material.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-material.lightable-striped tbody td {
+border: 0;
+}
+.lightable-material.lightable-striped thead tr:last-child th {
+border-bottom: 1px solid #ddd;
+}
+.lightable-material-dark {
+min-width: 100%;
+white-space: nowrap;
+table-layout: fixed;
+font-family: Roboto, sans-serif;
+border: 1px solid #FFFFFF12;
+border-collapse: collapse;
+margin-bottom: 10px;
+background-color: #363640;
+}
+.lightable-material-dark th {
+height: 56px;
+padding-left: 16px;
+padding-right: 16px;
+color: #FFFFFF60;
+}
+.lightable-material-dark td {
+height: 52px;
+padding-left: 16px;
+padding-right: 16px;
+color: #FFFFFF;
+border-top: 1px solid #FFFFFF12;
+}
+.lightable-material-dark.lightable-hover tbody tr:hover {
+background-color: #FFFFFF12;
+}
+.lightable-material-dark.lightable-striped tbody tr:nth-child(even) {
+background-color: #FFFFFF12;
+}
+.lightable-material-dark.lightable-striped tbody td {
+border: 0;
+}
+.lightable-material-dark.lightable-striped thead tr:last-child th {
+border-bottom: 1px solid #FFFFFF12;
+}
+.lightable-paper {
+width: 100%;
+margin-bottom: 10px;
+color: #444;
+}
+.lightable-paper thead tr:last-child th {
+color: #666;
+vertical-align: bottom;
+border-bottom: 1px solid #00000020;
+line-height: 1.15em;
+padding: 10px 5px;
+}
+.lightable-paper td {
+vertical-align: middle;
+border-bottom: 1px solid #00000010;
+line-height: 1.15em;
+padding: 7px 5px;
+}
+.lightable-paper.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-paper.lightable-striped tbody tr:nth-child(even) {
+background-color: #00000008;
+}
+.lightable-paper.lightable-striped tbody td {
+border: 0;
+}
+</style>
 
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -172,23 +367,4047 @@ code span.ot { color: #007020; }
 <span id="cb1-4"><a href="#cb1-4"></a><span class="co"># R Markdown</span></span>
 <span id="cb1-5"><a href="#cb1-5"></a><span class="kw">library</span>(knitr)</span>
 <span id="cb1-6"><a href="#cb1-6"></a><span class="kw">library</span>(rbbt)</span>
-<span id="cb1-7"><a href="#cb1-7"></a></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="co"># Statistics</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="kw">library</span>(psych)</span>
-<span id="cb1-10"><a href="#cb1-10"></a></span>
-<span id="cb1-11"><a href="#cb1-11"></a><span class="co"># Tidyverse</span></span>
-<span id="cb1-12"><a href="#cb1-12"></a><span class="kw">library</span>(readxl)</span>
-<span id="cb1-13"><a href="#cb1-13"></a><span class="kw">library</span>(tidyverse)</span>
-<span id="cb1-14"><a href="#cb1-14"></a><span class="kw">library</span>(broom)</span>
-<span id="cb1-15"><a href="#cb1-15"></a><span class="kw">library</span>(glue)</span>
-<span id="cb1-16"><a href="#cb1-16"></a><span class="kw">library</span>(corrr)</span></code></pre></div>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="kw">library</span>(kableExtra)</span>
+<span id="cb1-8"><a href="#cb1-8"></a></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="co"># Statistics</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="kw">library</span>(psych)</span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="kw">library</span>(lavaan)</span>
+<span id="cb1-12"><a href="#cb1-12"></a></span>
+<span id="cb1-13"><a href="#cb1-13"></a><span class="co"># Tidyverse</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="kw">library</span>(haven)</span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb1-16"><a href="#cb1-16"></a><span class="kw">library</span>(magrittr)</span></code></pre></div>
 </div>
-<div id="section" class="section level2">
-<h2>2.</h2>
+<div id="intercorrelated-measurement-model" class="section level2">
+<h2>1. Intercorrelated Measurement Model</h2>
+<div id="modeling-in-r" class="section level3">
+<h3>Modeling in R</h3>
+<p>First, I need to import the covariance matrix for the items. I will also clean it up a bit.</p>
+<p>Note: I need to take the absolute value of the data because <code>lavaan</code> does not accept negative values in its sample covariance matrices. I believe this should not affect the results by destroying information.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>tbl<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">read_dta</span>(<span class="kw">here</span>(<span class="st">&#39;data&#39;</span>, <span class="st">&#39;ambcori.dta&#39;</span>))</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a>tbl<span class="fl">.1</span> &lt;-<span class="st"> </span>tbl<span class="fl">.1</span>[<span class="dv">3</span><span class="op">:</span><span class="kw">length</span>(tbl<span class="fl">.1</span>)] <span class="op">%&gt;%</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(amb1)) <span class="op">%&gt;%</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="st">  </span>abs</span></code></pre></div>
+<p>I believe the SEM measurement model is equivalent to a CFA, so I may need to use the <code>cfa()</code> function in place of <code>sem()</code> to reproduce the LISREL/Stata analysis.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<p>I will also standardize the factors to a mean of zero and a variance of one. That’s my understanding of what <code>PH=ST</code> in LISREL and <code>var(AMB@1 CD@1 TP@1 HI@1 ANX@1)</code> in Stata are doing. It also allows <code>lavaan</code> to estimate loadings for the first item in each factor instead of using those items as scales.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>mtx<span class="fl">.1</span> &lt;-<span class="st"> </span>tbl<span class="fl">.1</span> <span class="op">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="st">  </span>as.matrix <span class="op">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="st">  </span><span class="kw">set_rownames</span>(<span class="kw">colnames</span>(.))</span>
+<span id="cb3-4"><a href="#cb3-4"></a></span>
+<span id="cb3-5"><a href="#cb3-5"></a>chr<span class="fl">.1</span> &lt;-<span class="st"> &#39;</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="st">    # measurement</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="st">    amb =~ amb1 + amb2 + amb3 + amb4 + amb5</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="st">    cd =~ cd1 + cd2 + cd3 + cd4</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="st">    tp =~ tp1 + tp2 + tp3 + tp4 + tp5</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="st">    hi =~ hi1 + hi2 + hi3 + hi4 + hi5 + hi6</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a><span class="st">    anx =~ anx1 + anx2 + anx3 + anx4 + anx5 + anx6 + anx7 + anx8</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a><span class="st">&#39;</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a></span>
+<span id="cb3-14"><a href="#cb3-14"></a>fit<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">cfa</span>(chr<span class="fl">.1</span>, <span class="dt">sample.cov =</span> mtx<span class="fl">.1</span>, <span class="dt">sample.nobs =</span> <span class="dv">211</span>, <span class="dt">std.lv =</span> T)</span></code></pre></div>
+<p>As a spot test, I’m going to check whether the <span class="math inline">\(\chi^2\)</span> for the R model matches that of the LISREL model.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">fitMeasures</span>(fit<span class="fl">.1</span>, <span class="st">&quot;chisq&quot;</span>)</span></code></pre></div>
+<pre><code>##   chisq 
+## 570.988</code></pre>
+<p>Oy, that does not match the <span class="math inline">\(\chi^2 \approx 605\)</span> in the LISREL output. But it’s kind of close. I’ll check the RMSEA.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">fitMeasures</span>(fit<span class="fl">.1</span>, <span class="st">&quot;rmsea&quot;</span>)</span></code></pre></div>
+<pre><code>## rmsea 
+## 0.057</code></pre>
+<p>That’s also close, but not exactly right. OK, here’s what I’m going to do. I will proceed with the analysis using the results in R but continue to check them against the LISREL output for now.</p>
+</div>
+<div id="item-loadings" class="section level3">
+<h3>Item Loadings</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>tbl.<span class="fl">1.</span>a &lt;-<span class="st"> </span>fit<span class="fl">.1</span> <span class="op">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="st">  </span><span class="kw">parameterEstimates</span>(<span class="dt">ci =</span> F)</span>
+<span id="cb8-3"><a href="#cb8-3"></a></span>
+<span id="cb8-4"><a href="#cb8-4"></a>tbl.<span class="fl">1.</span>a <span class="op">%&gt;%</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="st">  </span><span class="kw">filter</span>(op <span class="op">==</span><span class="st"> &quot;=~&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="st">  </span>kable</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+lhs
+</th>
+<th style="text-align:left;">
+op
+</th>
+<th style="text-align:left;">
+rhs
+</th>
+<th style="text-align:right;">
+est
+</th>
+<th style="text-align:right;">
+se
+</th>
+<th style="text-align:right;">
+z
+</th>
+<th style="text-align:right;">
+pvalue
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+amb1
+</td>
+<td style="text-align:right;">
+0.5951850
+</td>
+<td style="text-align:right;">
+0.0707325
+</td>
+<td style="text-align:right;">
+8.414587
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+amb2
+</td>
+<td style="text-align:right;">
+0.7046465
+</td>
+<td style="text-align:right;">
+0.0686909
+</td>
+<td style="text-align:right;">
+10.258218
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+amb3
+</td>
+<td style="text-align:right;">
+0.4263819
+</td>
+<td style="text-align:right;">
+0.0739855
+</td>
+<td style="text-align:right;">
+5.763046
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+amb4
+</td>
+<td style="text-align:right;">
+0.5036952
+</td>
+<td style="text-align:right;">
+0.0725881
+</td>
+<td style="text-align:right;">
+6.939086
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+amb5
+</td>
+<td style="text-align:right;">
+0.4373524
+</td>
+<td style="text-align:right;">
+0.0737996
+</td>
+<td style="text-align:right;">
+5.926214
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cd
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+cd1
+</td>
+<td style="text-align:right;">
+0.6861771
+</td>
+<td style="text-align:right;">
+0.0635125
+</td>
+<td style="text-align:right;">
+10.803818
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cd
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+cd2
+</td>
+<td style="text-align:right;">
+0.4299105
+</td>
+<td style="text-align:right;">
+0.0695283
+</td>
+<td style="text-align:right;">
+6.183247
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cd
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+cd3
+</td>
+<td style="text-align:right;">
+0.8402813
+</td>
+<td style="text-align:right;">
+0.0589320
+</td>
+<td style="text-align:right;">
+14.258482
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cd
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+cd4
+</td>
+<td style="text-align:right;">
+0.8598589
+</td>
+<td style="text-align:right;">
+0.0583342
+</td>
+<td style="text-align:right;">
+14.740230
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+tp1
+</td>
+<td style="text-align:right;">
+0.7062261
+</td>
+<td style="text-align:right;">
+0.0683542
+</td>
+<td style="text-align:right;">
+10.331857
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+tp2
+</td>
+<td style="text-align:right;">
+0.6847743
+</td>
+<td style="text-align:right;">
+0.0687352
+</td>
+<td style="text-align:right;">
+9.962498
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+tp3
+</td>
+<td style="text-align:right;">
+0.5045142
+</td>
+<td style="text-align:right;">
+0.0724502
+</td>
+<td style="text-align:right;">
+6.963603
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+tp4
+</td>
+<td style="text-align:right;">
+0.4895761
+</td>
+<td style="text-align:right;">
+0.0727391
+</td>
+<td style="text-align:right;">
+6.730574
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+tp5
+</td>
+<td style="text-align:right;">
+0.1815471
+</td>
+<td style="text-align:right;">
+0.0768394
+</td>
+<td style="text-align:right;">
+2.362684
+</td>
+<td style="text-align:right;">
+0.0181432
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hi
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+hi1
+</td>
+<td style="text-align:right;">
+0.6055980
+</td>
+<td style="text-align:right;">
+0.0709772
+</td>
+<td style="text-align:right;">
+8.532294
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hi
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+hi2
+</td>
+<td style="text-align:right;">
+0.3839978
+</td>
+<td style="text-align:right;">
+0.0747851
+</td>
+<td style="text-align:right;">
+5.134682
+</td>
+<td style="text-align:right;">
+0.0000003
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hi
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+hi3
+</td>
+<td style="text-align:right;">
+0.3524860
+</td>
+<td style="text-align:right;">
+0.0752262
+</td>
+<td style="text-align:right;">
+4.685682
+</td>
+<td style="text-align:right;">
+0.0000028
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hi
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+hi4
+</td>
+<td style="text-align:right;">
+0.4123199
+</td>
+<td style="text-align:right;">
+0.0743594
+</td>
+<td style="text-align:right;">
+5.544960
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hi
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+hi5
+</td>
+<td style="text-align:right;">
+0.4933564
+</td>
+<td style="text-align:right;">
+0.0730056
+</td>
+<td style="text-align:right;">
+6.757787
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hi
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+hi6
+</td>
+<td style="text-align:right;">
+0.5680924
+</td>
+<td style="text-align:right;">
+0.0716443
+</td>
+<td style="text-align:right;">
+7.929346
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+anx1
+</td>
+<td style="text-align:right;">
+0.5471883
+</td>
+<td style="text-align:right;">
+0.0705601
+</td>
+<td style="text-align:right;">
+7.754931
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+anx2
+</td>
+<td style="text-align:right;">
+0.2610233
+</td>
+<td style="text-align:right;">
+0.0752670
+</td>
+<td style="text-align:right;">
+3.467963
+</td>
+<td style="text-align:right;">
+0.0005244
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+anx3
+</td>
+<td style="text-align:right;">
+0.5657732
+</td>
+<td style="text-align:right;">
+0.0701435
+</td>
+<td style="text-align:right;">
+8.065940
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+anx4
+</td>
+<td style="text-align:right;">
+0.6092491
+</td>
+<td style="text-align:right;">
+0.0691282
+</td>
+<td style="text-align:right;">
+8.813328
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+anx5
+</td>
+<td style="text-align:right;">
+0.5326560
+</td>
+<td style="text-align:right;">
+0.0708775
+</td>
+<td style="text-align:right;">
+7.515160
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+anx6
+</td>
+<td style="text-align:right;">
+0.7269644
+</td>
+<td style="text-align:right;">
+0.0662256
+</td>
+<td style="text-align:right;">
+10.977091
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+anx7
+</td>
+<td style="text-align:right;">
+0.5513192
+</td>
+<td style="text-align:right;">
+0.0704685
+</td>
+<td style="text-align:right;">
+7.823630
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+anx8
+</td>
+<td style="text-align:right;">
+0.3548766
+</td>
+<td style="text-align:right;">
+0.0740934
+</td>
+<td style="text-align:right;">
+4.789581
+</td>
+<td style="text-align:right;">
+0.0000017
+</td>
+</tr>
+</tbody>
+</table>
+<p>First, the item loadings are approximately the same to those in LISREL, albeit not identical.</p>
+<p>Second, all the item loadings are significant across the board.</p>
+<p>Third, however, some of the loadings are worryingly low. TP5 loads on TP with just .18 and ANX2 loads on ANX with just .26.</p>
+<p>TP5 is “Faced with daily deadlines at work”, while most of the other TP items refer to time pressure <em>outside</em> of work. There may be an issue with that.</p>
+<p>ANX2 is “Felt as though I might faint”, which is both in a different tense than the other items (past vs. present) and is less a core symptom of anxiety than the other items (cf. “upset”, “restless”, “panicky”). Thus, it’s also possible to reason why there might be an issue with that item.</p>
+<p>Overall, frankly, few factor loadings exceed the common .7 rule-of-thumb. All these factors and loadings should therefore be interpreted with a grain of salt.</p>
+</div>
+<div id="factor-correlations" class="section level3">
+<h3>Factor Correlations</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>chr.<span class="fl">1.</span>a &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;amb&quot;</span>, <span class="st">&quot;cd&quot;</span>, <span class="st">&quot;tp&quot;</span>, <span class="st">&quot;hi&quot;</span>, <span class="st">&quot;anx&quot;</span>)</span>
+<span id="cb9-2"><a href="#cb9-2"></a></span>
+<span id="cb9-3"><a href="#cb9-3"></a>tbl.<span class="fl">1.</span>a <span class="op">%&gt;%</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="st">  </span><span class="kw">filter</span>(op <span class="op">==</span><span class="st"> &quot;~~&quot;</span>, lhs <span class="op">%in%</span><span class="st"> </span>chr.<span class="fl">1.</span>a, lhs <span class="op">!=</span><span class="st"> </span>rhs) <span class="op">%&gt;%</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="st">  </span>kable</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+lhs
+</th>
+<th style="text-align:left;">
+op
+</th>
+<th style="text-align:left;">
+rhs
+</th>
+<th style="text-align:right;">
+est
+</th>
+<th style="text-align:right;">
+se
+</th>
+<th style="text-align:right;">
+z
+</th>
+<th style="text-align:right;">
+pvalue
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:left;">
+~~
+</td>
+<td style="text-align:left;">
+cd
+</td>
+<td style="text-align:right;">
+0.7840136
+</td>
+<td style="text-align:right;">
+0.0501677
+</td>
+<td style="text-align:right;">
+15.627861
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:left;">
+~~
+</td>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:right;">
+0.3900178
+</td>
+<td style="text-align:right;">
+0.0872893
+</td>
+<td style="text-align:right;">
+4.468107
+</td>
+<td style="text-align:right;">
+0.0000079
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:left;">
+~~
+</td>
+<td style="text-align:left;">
+hi
+</td>
+<td style="text-align:right;">
+0.4744290
+</td>
+<td style="text-align:right;">
+0.0878285
+</td>
+<td style="text-align:right;">
+5.401766
+</td>
+<td style="text-align:right;">
+0.0000001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:left;">
+~~
+</td>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:right;">
+0.2118842
+</td>
+<td style="text-align:right;">
+0.0897756
+</td>
+<td style="text-align:right;">
+2.360154
+</td>
+<td style="text-align:right;">
+0.0182674
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cd
+</td>
+<td style="text-align:left;">
+~~
+</td>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:right;">
+0.3871620
+</td>
+<td style="text-align:right;">
+0.0773331
+</td>
+<td style="text-align:right;">
+5.006421
+</td>
+<td style="text-align:right;">
+0.0000006
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cd
+</td>
+<td style="text-align:left;">
+~~
+</td>
+<td style="text-align:left;">
+hi
+</td>
+<td style="text-align:right;">
+0.4267790
+</td>
+<td style="text-align:right;">
+0.0797100
+</td>
+<td style="text-align:right;">
+5.354146
+</td>
+<td style="text-align:right;">
+0.0000001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cd
+</td>
+<td style="text-align:left;">
+~~
+</td>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:right;">
+0.1406183
+</td>
+<td style="text-align:right;">
+0.0820861
+</td>
+<td style="text-align:right;">
+1.713059
+</td>
+<td style="text-align:right;">
+0.0867016
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:left;">
+~~
+</td>
+<td style="text-align:left;">
+hi
+</td>
+<td style="text-align:right;">
+0.8360994
+</td>
+<td style="text-align:right;">
+0.0602762
+</td>
+<td style="text-align:right;">
+13.871137
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:left;">
+~~
+</td>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:right;">
+0.5161111
+</td>
+<td style="text-align:right;">
+0.0743602
+</td>
+<td style="text-align:right;">
+6.940695
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hi
+</td>
+<td style="text-align:left;">
+~~
+</td>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:right;">
+0.6026375
+</td>
+<td style="text-align:right;">
+0.0733199
+</td>
+<td style="text-align:right;">
+8.219288
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+</tbody>
+</table>
+<p>Again, the estimates produced by R are similar, but not identical to, the estimates produced by LISREL. At this point, I will assume that trend continues and focus on the R output from here on.</p>
+<p>Our model supposes that, whether through direct or indirect effects, every variable is correlated with every other. The estimates of factor correlations mostly bear that out. With the possible exception of CD and ANX (<span class="math inline">\(\phi_{CD, ANX} \approx .14, p &lt; .1\)</span>), every pair of factors is significantly correlated. In addition, AMB and ANX are only weakly correlated (<span class="math inline">\(\phi_{AMB, ANX}\approx.21, p &lt; .05\)</span>). But AMB and CD are theoretically most distal from ANX in the model, so this is not really a problem.</p>
+<p>We will have to see what happens when these factors are formally introduced to each other in the structural model.</p>
+</div>
+<div id="modification-indices" class="section level3">
+<h3>Modification Indices</h3>
+<p>Modification indices (MIs) are ‘what if’ tests: “an MI reflects the improvement in model fit that would result if a previously omitted parameter were to be added and freely estimated” <span class="citation">(Curran-Bauer Analytics, 2019)</span>. There are as many MIs for a model as excluded parameters. In our case, the MIs are mostly loadings on other factors—for instance, AMB3’s loading on HI. What’s interesting, then, are the items that, when loaded on a different factor, improve the model significantly. MIs represent potential changes in <span class="math inline">\(\chi^2\)</span>, so larger values imply a larger <span class="math inline">\(\chi^2\)</span> and improved model fit.</p>
+<p>There are nearly 500 modification indices, so I truncated the full results to just a list of the 10 largest factor loadings in rank order.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>fit<span class="fl">.1</span> <span class="op">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="st">  </span><span class="kw">modificationIndices</span>(<span class="dt">sort. =</span> T, <span class="dt">op =</span> <span class="st">&quot;=~&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="st">  </span>kable</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+lhs
+</th>
+<th style="text-align:left;">
+op
+</th>
+<th style="text-align:left;">
+rhs
+</th>
+<th style="text-align:right;">
+mi
+</th>
+<th style="text-align:right;">
+epc
+</th>
+<th style="text-align:right;">
+sepc.lv
+</th>
+<th style="text-align:right;">
+sepc.all
+</th>
+<th style="text-align:right;">
+sepc.nox
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+128
+</td>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+hi1
+</td>
+<td style="text-align:right;">
+21.64422
+</td>
+<td style="text-align:right;">
+1.0926219
+</td>
+<td style="text-align:right;">
+1.0926219
+</td>
+<td style="text-align:right;">
+1.0952206
+</td>
+<td style="text-align:right;">
+1.0952206
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+130
+</td>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+hi3
+</td>
+<td style="text-align:right;">
+17.06270
+</td>
+<td style="text-align:right;">
+-0.9228530
+</td>
+<td style="text-align:right;">
+-0.9228530
+</td>
+<td style="text-align:right;">
+-0.9250480
+</td>
+<td style="text-align:right;">
+-0.9250480
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+181
+</td>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+hi4
+</td>
+<td style="text-align:right;">
+14.59955
+</td>
+<td style="text-align:right;">
+0.4028095
+</td>
+<td style="text-align:right;">
+0.4028095
+</td>
+<td style="text-align:right;">
+0.4037675
+</td>
+<td style="text-align:right;">
+0.4037675
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+81
+</td>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+hi1
+</td>
+<td style="text-align:right;">
+12.87624
+</td>
+<td style="text-align:right;">
+-0.3275390
+</td>
+<td style="text-align:right;">
+-0.3275390
+</td>
+<td style="text-align:right;">
+-0.3283181
+</td>
+<td style="text-align:right;">
+-0.3283181
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+139
+</td>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+anx6
+</td>
+<td style="text-align:right;">
+11.39455
+</td>
+<td style="text-align:right;">
+0.2856008
+</td>
+<td style="text-align:right;">
+0.2856008
+</td>
+<td style="text-align:right;">
+0.2862805
+</td>
+<td style="text-align:right;">
+0.2862805
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+72
+</td>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+cd1
+</td>
+<td style="text-align:right;">
+11.29562
+</td>
+<td style="text-align:right;">
+0.4562679
+</td>
+<td style="text-align:right;">
+0.4562679
+</td>
+<td style="text-align:right;">
+0.4573527
+</td>
+<td style="text-align:right;">
+0.4573527
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+82
+</td>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+hi2
+</td>
+<td style="text-align:right;">
+11.12923
+</td>
+<td style="text-align:right;">
+0.3063939
+</td>
+<td style="text-align:right;">
+0.3063939
+</td>
+<td style="text-align:right;">
+0.3071226
+</td>
+<td style="text-align:right;">
+0.3071226
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+106
+</td>
+<td style="text-align:left;">
+cd
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+hi2
+</td>
+<td style="text-align:right;">
+10.88502
+</td>
+<td style="text-align:right;">
+0.2713766
+</td>
+<td style="text-align:right;">
+0.2713766
+</td>
+<td style="text-align:right;">
+0.2720220
+</td>
+<td style="text-align:right;">
+0.2720220
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+144
+</td>
+<td style="text-align:left;">
+hi
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+amb3
+</td>
+<td style="text-align:right;">
+10.62096
+</td>
+<td style="text-align:right;">
+0.2945618
+</td>
+<td style="text-align:right;">
+0.2945618
+</td>
+<td style="text-align:right;">
+0.2952622
+</td>
+<td style="text-align:right;">
+0.2952622
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+121
+</td>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+amb3
+</td>
+<td style="text-align:right;">
+10.01354
+</td>
+<td style="text-align:right;">
+0.2689161
+</td>
+<td style="text-align:right;">
+0.2689161
+</td>
+<td style="text-align:right;">
+0.2695555
+</td>
+<td style="text-align:right;">
+0.2695555
+</td>
+</tr>
+</tbody>
+</table>
+<p>HI1, HI3, HI4 appear to not belong in HI! Let’s take a look at the items:</p>
+<ul>
+<li>HI1: Always rushed</li>
+<li>HI3: Act immediately under pressure</li>
+<li>HI4: Always hurry</li>
+</ul>
+<p>The MIs show that HI1 may belong TP. HI1 conceptually does seem to fit in TP because it’s in the form of a participle adjective, whereas HI is conceived as behavior.</p>
+<p>HI3 may also belong in TP for the obvious reason that it says “under PRESSURE”, which not-so-gently reminds me of “time PRESSURE”.</p>
+<p>HI4 may belong in ANX according to its MI, but I don’t see an obvious reason why. This may be a case where the MI suggests a change that’s not supported by theory.</p>
+</div>
+<div id="residuals" class="section level3">
+<h3>Residuals</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>mtx.<span class="fl">1.</span>a &lt;-<span class="st"> </span><span class="kw">resid</span>(fit<span class="fl">.1</span>)<span class="op">$</span>cov</span>
+<span id="cb11-2"><a href="#cb11-2"></a></span>
+<span id="cb11-3"><a href="#cb11-3"></a>mtx.<span class="fl">1.</span>a <span class="op">%&gt;%</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="st">  </span><span class="kw">kable</span>(<span class="dt">digits =</span> <span class="dv">3</span>, <span class="dt">row.names =</span> T) <span class="op">%&gt;%</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="st">  </span><span class="kw">kable_styling</span>(<span class="dt">font_size =</span> <span class="dv">13</span>) <span class="op">%&gt;%</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a><span class="st">  </span><span class="kw">scroll_box</span>(<span class="dt">width =</span> <span class="st">&quot;100%&quot;</span>, <span class="dt">height =</span> <span class="st">&quot;500px&quot;</span>,</span>
+<span id="cb11-7"><a href="#cb11-7"></a>             <span class="dt">fixed_thead =</span> <span class="kw">list</span>(<span class="dt">enabled =</span> T, <span class="dt">background =</span> <span class="st">&quot;#63a0e1&quot;</span>))</span></code></pre></div>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:100%; ">
+<table class="table" style="font-size: 13px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #63a0e1;">
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+amb1
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+amb2
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+amb3
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+amb4
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+amb5
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+cd1
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+cd2
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+cd3
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+cd4
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+tp1
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+tp2
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+tp3
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+tp4
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+tp5
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+hi1
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+hi2
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+hi3
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+hi4
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+hi5
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+hi6
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+anx1
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+anx2
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+anx3
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+anx4
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+anx5
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+anx6
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+anx7
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #63a0e1;">
+anx8
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+amb1
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.056
+</td>
+<td style="text-align:right;">
+-0.159
+</td>
+<td style="text-align:right;">
+0.052
+</td>
+<td style="text-align:right;">
+-0.080
+</td>
+<td style="text-align:right;">
+0.156
+</td>
+<td style="text-align:right;">
+-0.041
+</td>
+<td style="text-align:right;">
+0.024
+</td>
+<td style="text-align:right;">
+-0.032
+</td>
+<td style="text-align:right;">
+-0.051
+</td>
+<td style="text-align:right;">
+-0.141
+</td>
+<td style="text-align:right;">
+-0.004
+</td>
+<td style="text-align:right;">
+0.063
+</td>
+<td style="text-align:right;">
+0.104
+</td>
+<td style="text-align:right;">
+-0.164
+</td>
+<td style="text-align:right;">
+0.138
+</td>
+<td style="text-align:right;">
+-0.029
+</td>
+<td style="text-align:right;">
+-0.061
+</td>
+<td style="text-align:right;">
+0.028
+</td>
+<td style="text-align:right;">
+0.055
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:right;">
+0.122
+</td>
+<td style="text-align:right;">
+-0.057
+</td>
+<td style="text-align:right;">
+-0.075
+</td>
+<td style="text-align:right;">
+-0.007
+</td>
+<td style="text-align:right;">
+-0.056
+</td>
+<td style="text-align:right;">
+-0.065
+</td>
+<td style="text-align:right;">
+-0.017
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+amb2
+</td>
+<td style="text-align:right;">
+0.056
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+-0.055
+</td>
+<td style="text-align:right;">
+-0.063
+</td>
+<td style="text-align:right;">
+-0.010
+</td>
+<td style="text-align:right;">
+0.126
+</td>
+<td style="text-align:right;">
+0.013
+</td>
+<td style="text-align:right;">
+0.029
+</td>
+<td style="text-align:right;">
+-0.004
+</td>
+<td style="text-align:right;">
+0.010
+</td>
+<td style="text-align:right;">
+-0.133
+</td>
+<td style="text-align:right;">
+-0.033
+</td>
+<td style="text-align:right;">
+0.013
+</td>
+<td style="text-align:right;">
+0.072
+</td>
+<td style="text-align:right;">
+-0.201
+</td>
+<td style="text-align:right;">
+0.164
+</td>
+<td style="text-align:right;">
+-0.046
+</td>
+<td style="text-align:right;">
+-0.125
+</td>
+<td style="text-align:right;">
+0.030
+</td>
+<td style="text-align:right;">
+-0.005
+</td>
+<td style="text-align:right;">
+0.011
+</td>
+<td style="text-align:right;">
+0.109
+</td>
+<td style="text-align:right;">
+-0.072
+</td>
+<td style="text-align:right;">
+-0.086
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+<td style="text-align:right;">
+0.026
+</td>
+<td style="text-align:right;">
+0.010
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+amb3
+</td>
+<td style="text-align:right;">
+-0.159
+</td>
+<td style="text-align:right;">
+-0.055
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.075
+</td>
+<td style="text-align:right;">
+0.187
+</td>
+<td style="text-align:right;">
+-0.044
+</td>
+<td style="text-align:right;">
+0.020
+</td>
+<td style="text-align:right;">
+-0.034
+</td>
+<td style="text-align:right;">
+0.053
+</td>
+<td style="text-align:right;">
+0.121
+</td>
+<td style="text-align:right;">
+0.097
+</td>
+<td style="text-align:right;">
+0.186
+</td>
+<td style="text-align:right;">
+0.041
+</td>
+<td style="text-align:right;">
+0.049
+</td>
+<td style="text-align:right;">
+0.060
+</td>
+<td style="text-align:right;">
+0.095
+</td>
+<td style="text-align:right;">
+0.035
+</td>
+<td style="text-align:right;">
+0.039
+</td>
+<td style="text-align:right;">
+0.144
+</td>
+<td style="text-align:right;">
+0.139
+</td>
+<td style="text-align:right;">
+0.120
+</td>
+<td style="text-align:right;">
+0.007
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+-0.026
+</td>
+<td style="text-align:right;">
+0.100
+</td>
+<td style="text-align:right;">
+0.118
+</td>
+<td style="text-align:right;">
+0.120
+</td>
+<td style="text-align:right;">
+0.094
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+amb4
+</td>
+<td style="text-align:right;">
+0.052
+</td>
+<td style="text-align:right;">
+-0.063
+</td>
+<td style="text-align:right;">
+0.075
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.108
+</td>
+<td style="text-align:right;">
+0.005
+</td>
+<td style="text-align:right;">
+-0.148
+</td>
+<td style="text-align:right;">
+-0.018
+</td>
+<td style="text-align:right;">
+-0.072
+</td>
+<td style="text-align:right;">
+0.035
+</td>
+<td style="text-align:right;">
+0.036
+</td>
+<td style="text-align:right;">
+-0.038
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0.149
+</td>
+<td style="text-align:right;">
+0.009
+</td>
+<td style="text-align:right;">
+0.039
+</td>
+<td style="text-align:right;">
+0.040
+</td>
+<td style="text-align:right;">
+-0.040
+</td>
+<td style="text-align:right;">
+0.033
+</td>
+<td style="text-align:right;">
+0.176
+</td>
+<td style="text-align:right;">
+-0.057
+</td>
+<td style="text-align:right;">
+0.195
+</td>
+<td style="text-align:right;">
+-0.058
+</td>
+<td style="text-align:right;">
+-0.028
+</td>
+<td style="text-align:right;">
+-0.003
+</td>
+<td style="text-align:right;">
+-0.073
+</td>
+<td style="text-align:right;">
+-0.039
+</td>
+<td style="text-align:right;">
+-0.015
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+amb5
+</td>
+<td style="text-align:right;">
+-0.080
+</td>
+<td style="text-align:right;">
+-0.010
+</td>
+<td style="text-align:right;">
+0.187
+</td>
+<td style="text-align:right;">
+0.108
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.008
+</td>
+<td style="text-align:right;">
+0.058
+</td>
+<td style="text-align:right;">
+-0.083
+</td>
+<td style="text-align:right;">
+-0.074
+</td>
+<td style="text-align:right;">
+0.056
+</td>
+<td style="text-align:right;">
+0.039
+</td>
+<td style="text-align:right;">
+0.077
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+-0.016
+</td>
+<td style="text-align:right;">
+0.033
+</td>
+<td style="text-align:right;">
+-0.030
+</td>
+<td style="text-align:right;">
+-0.038
+</td>
+<td style="text-align:right;">
+-0.062
+</td>
+<td style="text-align:right;">
+-0.031
+</td>
+<td style="text-align:right;">
+0.092
+</td>
+<td style="text-align:right;">
+0.022
+</td>
+<td style="text-align:right;">
+0.143
+</td>
+<td style="text-align:right;">
+-0.045
+</td>
+<td style="text-align:right;">
+-0.029
+</td>
+<td style="text-align:right;">
+0.108
+</td>
+<td style="text-align:right;">
+0.138
+</td>
+<td style="text-align:right;">
+0.025
+</td>
+<td style="text-align:right;">
+0.113
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cd1
+</td>
+<td style="text-align:right;">
+0.156
+</td>
+<td style="text-align:right;">
+0.126
+</td>
+<td style="text-align:right;">
+-0.044
+</td>
+<td style="text-align:right;">
+0.005
+</td>
+<td style="text-align:right;">
+0.008
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.042
+</td>
+<td style="text-align:right;">
+-0.019
+</td>
+<td style="text-align:right;">
+-0.027
+</td>
+<td style="text-align:right;">
+0.027
+</td>
+<td style="text-align:right;">
+-0.092
+</td>
+<td style="text-align:right;">
+0.052
+</td>
+<td style="text-align:right;">
+0.063
+</td>
+<td style="text-align:right;">
+0.007
+</td>
+<td style="text-align:right;">
+-0.115
+</td>
+<td style="text-align:right;">
+0.176
+</td>
+<td style="text-align:right;">
+0.073
+</td>
+<td style="text-align:right;">
+-0.071
+</td>
+<td style="text-align:right;">
+0.108
+</td>
+<td style="text-align:right;">
+-0.004
+</td>
+<td style="text-align:right;">
+-0.036
+</td>
+<td style="text-align:right;">
+0.076
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+-0.038
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+0.053
+</td>
+<td style="text-align:right;">
+-0.026
+</td>
+<td style="text-align:right;">
+-0.023
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cd2
+</td>
+<td style="text-align:right;">
+-0.041
+</td>
+<td style="text-align:right;">
+0.013
+</td>
+<td style="text-align:right;">
+0.020
+</td>
+<td style="text-align:right;">
+-0.148
+</td>
+<td style="text-align:right;">
+0.058
+</td>
+<td style="text-align:right;">
+0.042
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+-0.041
+</td>
+<td style="text-align:right;">
+0.030
+</td>
+<td style="text-align:right;">
+0.033
+</td>
+<td style="text-align:right;">
+-0.038
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+-0.008
+</td>
+<td style="text-align:right;">
+0.094
+</td>
+<td style="text-align:right;">
+-0.110
+</td>
+<td style="text-align:right;">
+0.171
+</td>
+<td style="text-align:right;">
+0.024
+</td>
+<td style="text-align:right;">
+0.008
+</td>
+<td style="text-align:right;">
+0.113
+</td>
+<td style="text-align:right;">
+-0.051
+</td>
+<td style="text-align:right;">
+0.103
+</td>
+<td style="text-align:right;">
+0.065
+</td>
+<td style="text-align:right;">
+0.021
+</td>
+<td style="text-align:right;">
+0.054
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+<td style="text-align:right;">
+0.048
+</td>
+<td style="text-align:right;">
+0.107
+</td>
+<td style="text-align:right;">
+0.053
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cd3
+</td>
+<td style="text-align:right;">
+0.024
+</td>
+<td style="text-align:right;">
+0.029
+</td>
+<td style="text-align:right;">
+-0.034
+</td>
+<td style="text-align:right;">
+-0.018
+</td>
+<td style="text-align:right;">
+-0.083
+</td>
+<td style="text-align:right;">
+-0.019
+</td>
+<td style="text-align:right;">
+-0.041
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.017
+</td>
+<td style="text-align:right;">
+-0.026
+</td>
+<td style="text-align:right;">
+-0.067
+</td>
+<td style="text-align:right;">
+-0.006
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:right;">
+0.090
+</td>
+<td style="text-align:right;">
+-0.069
+</td>
+<td style="text-align:right;">
+0.125
+</td>
+<td style="text-align:right;">
+0.009
+</td>
+<td style="text-align:right;">
+-0.128
+</td>
+<td style="text-align:right;">
+0.041
+</td>
+<td style="text-align:right;">
+0.053
+</td>
+<td style="text-align:right;">
+-0.019
+</td>
+<td style="text-align:right;">
+0.063
+</td>
+<td style="text-align:right;">
+0.008
+</td>
+<td style="text-align:right;">
+-0.059
+</td>
+<td style="text-align:right;">
+0.033
+</td>
+<td style="text-align:right;">
+-0.003
+</td>
+<td style="text-align:right;">
+-0.006
+</td>
+<td style="text-align:right;">
+-0.022
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cd4
+</td>
+<td style="text-align:right;">
+-0.032
+</td>
+<td style="text-align:right;">
+-0.004
+</td>
+<td style="text-align:right;">
+0.053
+</td>
+<td style="text-align:right;">
+-0.072
+</td>
+<td style="text-align:right;">
+-0.074
+</td>
+<td style="text-align:right;">
+-0.027
+</td>
+<td style="text-align:right;">
+0.030
+</td>
+<td style="text-align:right;">
+0.017
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.025
+</td>
+<td style="text-align:right;">
+-0.028
+</td>
+<td style="text-align:right;">
+0.089
+</td>
+<td style="text-align:right;">
+0.035
+</td>
+<td style="text-align:right;">
+0.056
+</td>
+<td style="text-align:right;">
+-0.094
+</td>
+<td style="text-align:right;">
+0.146
+</td>
+<td style="text-align:right;">
+-0.031
+</td>
+<td style="text-align:right;">
+-0.069
+</td>
+<td style="text-align:right;">
+0.099
+</td>
+<td style="text-align:right;">
+-0.011
+</td>
+<td style="text-align:right;">
+0.111
+</td>
+<td style="text-align:right;">
+0.007
+</td>
+<td style="text-align:right;">
+-0.029
+</td>
+<td style="text-align:right;">
+-0.064
+</td>
+<td style="text-align:right;">
+0.014
+</td>
+<td style="text-align:right;">
+-0.005
+</td>
+<td style="text-align:right;">
+-0.018
+</td>
+<td style="text-align:right;">
+-0.037
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tp1
+</td>
+<td style="text-align:right;">
+-0.051
+</td>
+<td style="text-align:right;">
+0.010
+</td>
+<td style="text-align:right;">
+0.121
+</td>
+<td style="text-align:right;">
+0.035
+</td>
+<td style="text-align:right;">
+0.056
+</td>
+<td style="text-align:right;">
+0.027
+</td>
+<td style="text-align:right;">
+0.033
+</td>
+<td style="text-align:right;">
+-0.026
+</td>
+<td style="text-align:right;">
+0.025
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.053
+</td>
+<td style="text-align:right;">
+-0.069
+</td>
+<td style="text-align:right;">
+-0.028
+</td>
+<td style="text-align:right;">
+-0.012
+</td>
+<td style="text-align:right;">
+0.146
+</td>
+<td style="text-align:right;">
+-0.100
+</td>
+<td style="text-align:right;">
+-0.127
+</td>
+<td style="text-align:right;">
+-0.083
+</td>
+<td style="text-align:right;">
+-0.113
+</td>
+<td style="text-align:right;">
+0.096
+</td>
+<td style="text-align:right;">
+-0.011
+</td>
+<td style="text-align:right;">
+-0.018
+</td>
+<td style="text-align:right;">
+-0.114
+</td>
+<td style="text-align:right;">
+-0.035
+</td>
+<td style="text-align:right;">
+-0.046
+</td>
+<td style="text-align:right;">
+0.082
+</td>
+<td style="text-align:right;">
+-0.073
+</td>
+<td style="text-align:right;">
+0.018
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tp2
+</td>
+<td style="text-align:right;">
+-0.141
+</td>
+<td style="text-align:right;">
+-0.133
+</td>
+<td style="text-align:right;">
+0.097
+</td>
+<td style="text-align:right;">
+0.036
+</td>
+<td style="text-align:right;">
+0.039
+</td>
+<td style="text-align:right;">
+-0.092
+</td>
+<td style="text-align:right;">
+-0.038
+</td>
+<td style="text-align:right;">
+-0.067
+</td>
+<td style="text-align:right;">
+-0.028
+</td>
+<td style="text-align:right;">
+0.053
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.036
+</td>
+<td style="text-align:right;">
+-0.024
+</td>
+<td style="text-align:right;">
+-0.092
+</td>
+<td style="text-align:right;">
+0.136
+</td>
+<td style="text-align:right;">
+-0.073
+</td>
+<td style="text-align:right;">
+-0.200
+</td>
+<td style="text-align:right;">
+-0.063
+</td>
+<td style="text-align:right;">
+-0.048
+</td>
+<td style="text-align:right;">
+-0.044
+</td>
+<td style="text-align:right;">
+-0.011
+</td>
+<td style="text-align:right;">
+0.030
+</td>
+<td style="text-align:right;">
+-0.051
+</td>
+<td style="text-align:right;">
+-0.050
+</td>
+<td style="text-align:right;">
+-0.085
+</td>
+<td style="text-align:right;">
+0.083
+</td>
+<td style="text-align:right;">
+0.029
+</td>
+<td style="text-align:right;">
+-0.070
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tp3
+</td>
+<td style="text-align:right;">
+-0.004
+</td>
+<td style="text-align:right;">
+-0.033
+</td>
+<td style="text-align:right;">
+0.186
+</td>
+<td style="text-align:right;">
+-0.038
+</td>
+<td style="text-align:right;">
+0.077
+</td>
+<td style="text-align:right;">
+0.052
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+-0.006
+</td>
+<td style="text-align:right;">
+0.089
+</td>
+<td style="text-align:right;">
+-0.069
+</td>
+<td style="text-align:right;">
+0.036
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.020
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0.027
+</td>
+<td style="text-align:right;">
+-0.085
+</td>
+<td style="text-align:right;">
+-0.025
+</td>
+<td style="text-align:right;">
+-0.010
+</td>
+<td style="text-align:right;">
+-0.004
+</td>
+<td style="text-align:right;">
+0.026
+</td>
+<td style="text-align:right;">
+0.040
+</td>
+<td style="text-align:right;">
+0.067
+</td>
+<td style="text-align:right;">
+-0.040
+</td>
+<td style="text-align:right;">
+-0.004
+</td>
+<td style="text-align:right;">
+0.074
+</td>
+<td style="text-align:right;">
+0.110
+</td>
+<td style="text-align:right;">
+0.063
+</td>
+<td style="text-align:right;">
+-0.086
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tp4
+</td>
+<td style="text-align:right;">
+0.063
+</td>
+<td style="text-align:right;">
+0.013
+</td>
+<td style="text-align:right;">
+0.041
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.063
+</td>
+<td style="text-align:right;">
+-0.008
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:right;">
+0.035
+</td>
+<td style="text-align:right;">
+-0.028
+</td>
+<td style="text-align:right;">
+-0.024
+</td>
+<td style="text-align:right;">
+0.020
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.010
+</td>
+<td style="text-align:right;">
+-0.052
+</td>
+<td style="text-align:right;">
+-0.004
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:right;">
+0.042
+</td>
+<td style="text-align:right;">
+-0.037
+</td>
+<td style="text-align:right;">
+0.162
+</td>
+<td style="text-align:right;">
+-0.110
+</td>
+<td style="text-align:right;">
+0.080
+</td>
+<td style="text-align:right;">
+0.084
+</td>
+<td style="text-align:right;">
+-0.067
+</td>
+<td style="text-align:right;">
+-0.015
+</td>
+<td style="text-align:right;">
+0.117
+</td>
+<td style="text-align:right;">
+-0.067
+</td>
+<td style="text-align:right;">
+-0.007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tp5
+</td>
+<td style="text-align:right;">
+0.104
+</td>
+<td style="text-align:right;">
+0.072
+</td>
+<td style="text-align:right;">
+0.049
+</td>
+<td style="text-align:right;">
+0.149
+</td>
+<td style="text-align:right;">
+-0.016
+</td>
+<td style="text-align:right;">
+0.007
+</td>
+<td style="text-align:right;">
+0.094
+</td>
+<td style="text-align:right;">
+0.090
+</td>
+<td style="text-align:right;">
+0.056
+</td>
+<td style="text-align:right;">
+-0.012
+</td>
+<td style="text-align:right;">
+-0.092
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0.010
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+-0.089
+</td>
+<td style="text-align:right;">
+0.040
+</td>
+<td style="text-align:right;">
+-0.013
+</td>
+<td style="text-align:right;">
+0.039
+</td>
+<td style="text-align:right;">
+0.137
+</td>
+<td style="text-align:right;">
+0.241
+</td>
+<td style="text-align:right;">
+0.110
+</td>
+<td style="text-align:right;">
+-0.014
+</td>
+<td style="text-align:right;">
+-0.030
+</td>
+<td style="text-align:right;">
+-0.049
+</td>
+<td style="text-align:right;">
+-0.039
+</td>
+<td style="text-align:right;">
+-0.063
+</td>
+<td style="text-align:right;">
+-0.003
+</td>
+<td style="text-align:right;">
+-0.019
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hi1
+</td>
+<td style="text-align:right;">
+-0.164
+</td>
+<td style="text-align:right;">
+-0.201
+</td>
+<td style="text-align:right;">
+0.060
+</td>
+<td style="text-align:right;">
+0.009
+</td>
+<td style="text-align:right;">
+0.033
+</td>
+<td style="text-align:right;">
+-0.115
+</td>
+<td style="text-align:right;">
+-0.110
+</td>
+<td style="text-align:right;">
+-0.069
+</td>
+<td style="text-align:right;">
+-0.094
+</td>
+<td style="text-align:right;">
+0.146
+</td>
+<td style="text-align:right;">
+0.136
+</td>
+<td style="text-align:right;">
+0.027
+</td>
+<td style="text-align:right;">
+-0.052
+</td>
+<td style="text-align:right;">
+-0.089
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+0.012
+</td>
+<td style="text-align:right;">
+-0.090
+</td>
+<td style="text-align:right;">
+-0.068
+</td>
+<td style="text-align:right;">
+-0.002
+</td>
+<td style="text-align:right;">
+-0.051
+</td>
+<td style="text-align:right;">
+-0.046
+</td>
+<td style="text-align:right;">
+-0.087
+</td>
+<td style="text-align:right;">
+0.045
+</td>
+<td style="text-align:right;">
+0.075
+</td>
+<td style="text-align:right;">
+0.055
+</td>
+<td style="text-align:right;">
+-0.074
+</td>
+<td style="text-align:right;">
+0.062
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hi2
+</td>
+<td style="text-align:right;">
+0.138
+</td>
+<td style="text-align:right;">
+0.164
+</td>
+<td style="text-align:right;">
+0.095
+</td>
+<td style="text-align:right;">
+0.039
+</td>
+<td style="text-align:right;">
+-0.030
+</td>
+<td style="text-align:right;">
+0.176
+</td>
+<td style="text-align:right;">
+0.171
+</td>
+<td style="text-align:right;">
+0.125
+</td>
+<td style="text-align:right;">
+0.146
+</td>
+<td style="text-align:right;">
+-0.100
+</td>
+<td style="text-align:right;">
+-0.073
+</td>
+<td style="text-align:right;">
+-0.085
+</td>
+<td style="text-align:right;">
+-0.004
+</td>
+<td style="text-align:right;">
+0.040
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.211
+</td>
+<td style="text-align:right;">
+-0.079
+</td>
+<td style="text-align:right;">
+0.145
+</td>
+<td style="text-align:right;">
+-0.037
+</td>
+<td style="text-align:right;">
+-0.095
+</td>
+<td style="text-align:right;">
+-0.027
+</td>
+<td style="text-align:right;">
+-0.093
+</td>
+<td style="text-align:right;">
+-0.120
+</td>
+<td style="text-align:right;">
+-0.107
+</td>
+<td style="text-align:right;">
+-0.005
+</td>
+<td style="text-align:right;">
+-0.071
+</td>
+<td style="text-align:right;">
+-0.070
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hi3
+</td>
+<td style="text-align:right;">
+-0.029
+</td>
+<td style="text-align:right;">
+-0.046
+</td>
+<td style="text-align:right;">
+0.035
+</td>
+<td style="text-align:right;">
+0.040
+</td>
+<td style="text-align:right;">
+-0.038
+</td>
+<td style="text-align:right;">
+0.073
+</td>
+<td style="text-align:right;">
+0.024
+</td>
+<td style="text-align:right;">
+0.009
+</td>
+<td style="text-align:right;">
+-0.031
+</td>
+<td style="text-align:right;">
+-0.127
+</td>
+<td style="text-align:right;">
+-0.200
+</td>
+<td style="text-align:right;">
+-0.025
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:right;">
+-0.013
+</td>
+<td style="text-align:right;">
+0.012
+</td>
+<td style="text-align:right;">
+0.211
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.122
+</td>
+<td style="text-align:right;">
+0.032
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+-0.021
+</td>
+<td style="text-align:right;">
+-0.029
+</td>
+<td style="text-align:right;">
+0.024
+</td>
+<td style="text-align:right;">
+0.030
+</td>
+<td style="text-align:right;">
+0.054
+</td>
+<td style="text-align:right;">
+0.059
+</td>
+<td style="text-align:right;">
+-0.034
+</td>
+<td style="text-align:right;">
+0.038
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hi4
+</td>
+<td style="text-align:right;">
+-0.061
+</td>
+<td style="text-align:right;">
+-0.125
+</td>
+<td style="text-align:right;">
+0.039
+</td>
+<td style="text-align:right;">
+-0.040
+</td>
+<td style="text-align:right;">
+-0.062
+</td>
+<td style="text-align:right;">
+-0.071
+</td>
+<td style="text-align:right;">
+0.008
+</td>
+<td style="text-align:right;">
+-0.128
+</td>
+<td style="text-align:right;">
+-0.069
+</td>
+<td style="text-align:right;">
+-0.083
+</td>
+<td style="text-align:right;">
+-0.063
+</td>
+<td style="text-align:right;">
+-0.010
+</td>
+<td style="text-align:right;">
+0.042
+</td>
+<td style="text-align:right;">
+0.039
+</td>
+<td style="text-align:right;">
+-0.090
+</td>
+<td style="text-align:right;">
+-0.079
+</td>
+<td style="text-align:right;">
+0.122
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.152
+</td>
+<td style="text-align:right;">
+-0.025
+</td>
+<td style="text-align:right;">
+0.139
+</td>
+<td style="text-align:right;">
+0.068
+</td>
+<td style="text-align:right;">
+0.194
+</td>
+<td style="text-align:right;">
+0.082
+</td>
+<td style="text-align:right;">
+0.049
+</td>
+<td style="text-align:right;">
+0.091
+</td>
+<td style="text-align:right;">
+0.179
+</td>
+<td style="text-align:right;">
+0.097
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hi5
+</td>
+<td style="text-align:right;">
+0.028
+</td>
+<td style="text-align:right;">
+0.030
+</td>
+<td style="text-align:right;">
+0.144
+</td>
+<td style="text-align:right;">
+0.033
+</td>
+<td style="text-align:right;">
+-0.031
+</td>
+<td style="text-align:right;">
+0.108
+</td>
+<td style="text-align:right;">
+0.113
+</td>
+<td style="text-align:right;">
+0.041
+</td>
+<td style="text-align:right;">
+0.099
+</td>
+<td style="text-align:right;">
+-0.113
+</td>
+<td style="text-align:right;">
+-0.048
+</td>
+<td style="text-align:right;">
+-0.004
+</td>
+<td style="text-align:right;">
+-0.037
+</td>
+<td style="text-align:right;">
+0.137
+</td>
+<td style="text-align:right;">
+-0.068
+</td>
+<td style="text-align:right;">
+0.145
+</td>
+<td style="text-align:right;">
+0.032
+</td>
+<td style="text-align:right;">
+0.152
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+-0.074
+</td>
+<td style="text-align:right;">
+0.043
+</td>
+<td style="text-align:right;">
+0.073
+</td>
+<td style="text-align:right;">
+-0.001
+</td>
+<td style="text-align:right;">
+-0.048
+</td>
+<td style="text-align:right;">
+-0.018
+</td>
+<td style="text-align:right;">
+0.032
+</td>
+<td style="text-align:right;">
+0.103
+</td>
+<td style="text-align:right;">
+0.024
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hi6
+</td>
+<td style="text-align:right;">
+0.055
+</td>
+<td style="text-align:right;">
+-0.005
+</td>
+<td style="text-align:right;">
+0.139
+</td>
+<td style="text-align:right;">
+0.176
+</td>
+<td style="text-align:right;">
+0.092
+</td>
+<td style="text-align:right;">
+-0.004
+</td>
+<td style="text-align:right;">
+-0.051
+</td>
+<td style="text-align:right;">
+0.053
+</td>
+<td style="text-align:right;">
+-0.011
+</td>
+<td style="text-align:right;">
+0.096
+</td>
+<td style="text-align:right;">
+-0.044
+</td>
+<td style="text-align:right;">
+0.026
+</td>
+<td style="text-align:right;">
+0.162
+</td>
+<td style="text-align:right;">
+0.241
+</td>
+<td style="text-align:right;">
+-0.002
+</td>
+<td style="text-align:right;">
+-0.037
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+-0.025
+</td>
+<td style="text-align:right;">
+-0.074
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+-0.148
+</td>
+<td style="text-align:right;">
+-0.067
+</td>
+<td style="text-align:right;">
+-0.029
+</td>
+<td style="text-align:right;">
+-0.049
+</td>
+<td style="text-align:right;">
+-0.071
+</td>
+<td style="text-align:right;">
+-0.044
+</td>
+<td style="text-align:right;">
+-0.086
+</td>
+<td style="text-align:right;">
+0.007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx1
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:right;">
+0.011
+</td>
+<td style="text-align:right;">
+0.120
+</td>
+<td style="text-align:right;">
+-0.057
+</td>
+<td style="text-align:right;">
+0.022
+</td>
+<td style="text-align:right;">
+-0.036
+</td>
+<td style="text-align:right;">
+0.103
+</td>
+<td style="text-align:right;">
+-0.019
+</td>
+<td style="text-align:right;">
+0.111
+</td>
+<td style="text-align:right;">
+-0.011
+</td>
+<td style="text-align:right;">
+-0.011
+</td>
+<td style="text-align:right;">
+0.040
+</td>
+<td style="text-align:right;">
+-0.110
+</td>
+<td style="text-align:right;">
+0.110
+</td>
+<td style="text-align:right;">
+-0.051
+</td>
+<td style="text-align:right;">
+-0.095
+</td>
+<td style="text-align:right;">
+-0.021
+</td>
+<td style="text-align:right;">
+0.139
+</td>
+<td style="text-align:right;">
+0.043
+</td>
+<td style="text-align:right;">
+-0.148
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.032
+</td>
+<td style="text-align:right;">
+0.029
+</td>
+<td style="text-align:right;">
+-0.029
+</td>
+<td style="text-align:right;">
+0.032
+</td>
+<td style="text-align:right;">
+-0.013
+</td>
+<td style="text-align:right;">
+0.065
+</td>
+<td style="text-align:right;">
+-0.056
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx2
+</td>
+<td style="text-align:right;">
+0.122
+</td>
+<td style="text-align:right;">
+0.109
+</td>
+<td style="text-align:right;">
+0.007
+</td>
+<td style="text-align:right;">
+0.195
+</td>
+<td style="text-align:right;">
+0.143
+</td>
+<td style="text-align:right;">
+0.076
+</td>
+<td style="text-align:right;">
+0.065
+</td>
+<td style="text-align:right;">
+0.063
+</td>
+<td style="text-align:right;">
+0.007
+</td>
+<td style="text-align:right;">
+-0.018
+</td>
+<td style="text-align:right;">
+0.030
+</td>
+<td style="text-align:right;">
+0.067
+</td>
+<td style="text-align:right;">
+0.080
+</td>
+<td style="text-align:right;">
+-0.014
+</td>
+<td style="text-align:right;">
+-0.046
+</td>
+<td style="text-align:right;">
+-0.027
+</td>
+<td style="text-align:right;">
+-0.029
+</td>
+<td style="text-align:right;">
+0.068
+</td>
+<td style="text-align:right;">
+0.073
+</td>
+<td style="text-align:right;">
+-0.067
+</td>
+<td style="text-align:right;">
+0.032
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+-0.001
+</td>
+<td style="text-align:right;">
+-0.010
+</td>
+<td style="text-align:right;">
+-0.028
+</td>
+<td style="text-align:right;">
+-0.050
+</td>
+<td style="text-align:right;">
+0.036
+</td>
+<td style="text-align:right;">
+0.117
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx3
+</td>
+<td style="text-align:right;">
+-0.057
+</td>
+<td style="text-align:right;">
+-0.072
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+-0.058
+</td>
+<td style="text-align:right;">
+-0.045
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.021
+</td>
+<td style="text-align:right;">
+0.008
+</td>
+<td style="text-align:right;">
+-0.029
+</td>
+<td style="text-align:right;">
+-0.114
+</td>
+<td style="text-align:right;">
+-0.051
+</td>
+<td style="text-align:right;">
+-0.040
+</td>
+<td style="text-align:right;">
+0.084
+</td>
+<td style="text-align:right;">
+-0.030
+</td>
+<td style="text-align:right;">
+-0.087
+</td>
+<td style="text-align:right;">
+-0.093
+</td>
+<td style="text-align:right;">
+0.024
+</td>
+<td style="text-align:right;">
+0.194
+</td>
+<td style="text-align:right;">
+-0.001
+</td>
+<td style="text-align:right;">
+-0.029
+</td>
+<td style="text-align:right;">
+0.029
+</td>
+<td style="text-align:right;">
+-0.001
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.039
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+<td style="text-align:right;">
+-0.015
+</td>
+<td style="text-align:right;">
+0.022
+</td>
+<td style="text-align:right;">
+-0.054
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx4
+</td>
+<td style="text-align:right;">
+-0.075
+</td>
+<td style="text-align:right;">
+-0.086
+</td>
+<td style="text-align:right;">
+-0.026
+</td>
+<td style="text-align:right;">
+-0.028
+</td>
+<td style="text-align:right;">
+-0.029
+</td>
+<td style="text-align:right;">
+-0.038
+</td>
+<td style="text-align:right;">
+0.054
+</td>
+<td style="text-align:right;">
+-0.059
+</td>
+<td style="text-align:right;">
+-0.064
+</td>
+<td style="text-align:right;">
+-0.035
+</td>
+<td style="text-align:right;">
+-0.050
+</td>
+<td style="text-align:right;">
+-0.004
+</td>
+<td style="text-align:right;">
+-0.067
+</td>
+<td style="text-align:right;">
+-0.049
+</td>
+<td style="text-align:right;">
+0.045
+</td>
+<td style="text-align:right;">
+-0.120
+</td>
+<td style="text-align:right;">
+0.030
+</td>
+<td style="text-align:right;">
+0.082
+</td>
+<td style="text-align:right;">
+-0.048
+</td>
+<td style="text-align:right;">
+-0.049
+</td>
+<td style="text-align:right;">
+-0.029
+</td>
+<td style="text-align:right;">
+-0.010
+</td>
+<td style="text-align:right;">
+0.039
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:right;">
+0.005
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0.012
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx5
+</td>
+<td style="text-align:right;">
+-0.007
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+<td style="text-align:right;">
+0.100
+</td>
+<td style="text-align:right;">
+-0.003
+</td>
+<td style="text-align:right;">
+0.108
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+<td style="text-align:right;">
+0.033
+</td>
+<td style="text-align:right;">
+0.014
+</td>
+<td style="text-align:right;">
+-0.046
+</td>
+<td style="text-align:right;">
+-0.085
+</td>
+<td style="text-align:right;">
+0.074
+</td>
+<td style="text-align:right;">
+-0.015
+</td>
+<td style="text-align:right;">
+-0.039
+</td>
+<td style="text-align:right;">
+0.075
+</td>
+<td style="text-align:right;">
+-0.107
+</td>
+<td style="text-align:right;">
+0.054
+</td>
+<td style="text-align:right;">
+0.049
+</td>
+<td style="text-align:right;">
+-0.018
+</td>
+<td style="text-align:right;">
+-0.071
+</td>
+<td style="text-align:right;">
+0.032
+</td>
+<td style="text-align:right;">
+-0.028
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.015
+</td>
+<td style="text-align:right;">
+-0.044
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx6
+</td>
+<td style="text-align:right;">
+-0.056
+</td>
+<td style="text-align:right;">
+0.026
+</td>
+<td style="text-align:right;">
+0.118
+</td>
+<td style="text-align:right;">
+-0.073
+</td>
+<td style="text-align:right;">
+0.138
+</td>
+<td style="text-align:right;">
+0.053
+</td>
+<td style="text-align:right;">
+0.048
+</td>
+<td style="text-align:right;">
+-0.003
+</td>
+<td style="text-align:right;">
+-0.005
+</td>
+<td style="text-align:right;">
+0.082
+</td>
+<td style="text-align:right;">
+0.083
+</td>
+<td style="text-align:right;">
+0.110
+</td>
+<td style="text-align:right;">
+0.117
+</td>
+<td style="text-align:right;">
+-0.063
+</td>
+<td style="text-align:right;">
+0.055
+</td>
+<td style="text-align:right;">
+-0.005
+</td>
+<td style="text-align:right;">
+0.059
+</td>
+<td style="text-align:right;">
+0.091
+</td>
+<td style="text-align:right;">
+0.032
+</td>
+<td style="text-align:right;">
+-0.044
+</td>
+<td style="text-align:right;">
+-0.013
+</td>
+<td style="text-align:right;">
+-0.050
+</td>
+<td style="text-align:right;">
+-0.015
+</td>
+<td style="text-align:right;">
+0.005
+</td>
+<td style="text-align:right;">
+0.015
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+-0.042
+</td>
+<td style="text-align:right;">
+-0.022
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx7
+</td>
+<td style="text-align:right;">
+-0.065
+</td>
+<td style="text-align:right;">
+0.010
+</td>
+<td style="text-align:right;">
+0.120
+</td>
+<td style="text-align:right;">
+-0.039
+</td>
+<td style="text-align:right;">
+0.025
+</td>
+<td style="text-align:right;">
+-0.026
+</td>
+<td style="text-align:right;">
+0.107
+</td>
+<td style="text-align:right;">
+-0.006
+</td>
+<td style="text-align:right;">
+-0.018
+</td>
+<td style="text-align:right;">
+-0.073
+</td>
+<td style="text-align:right;">
+0.029
+</td>
+<td style="text-align:right;">
+0.063
+</td>
+<td style="text-align:right;">
+-0.067
+</td>
+<td style="text-align:right;">
+-0.003
+</td>
+<td style="text-align:right;">
+-0.074
+</td>
+<td style="text-align:right;">
+-0.071
+</td>
+<td style="text-align:right;">
+-0.034
+</td>
+<td style="text-align:right;">
+0.179
+</td>
+<td style="text-align:right;">
+0.103
+</td>
+<td style="text-align:right;">
+-0.086
+</td>
+<td style="text-align:right;">
+0.065
+</td>
+<td style="text-align:right;">
+0.036
+</td>
+<td style="text-align:right;">
+0.022
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+-0.044
+</td>
+<td style="text-align:right;">
+-0.042
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.075
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx8
+</td>
+<td style="text-align:right;">
+-0.017
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+<td style="text-align:right;">
+0.094
+</td>
+<td style="text-align:right;">
+-0.015
+</td>
+<td style="text-align:right;">
+0.113
+</td>
+<td style="text-align:right;">
+-0.023
+</td>
+<td style="text-align:right;">
+0.053
+</td>
+<td style="text-align:right;">
+-0.022
+</td>
+<td style="text-align:right;">
+-0.037
+</td>
+<td style="text-align:right;">
+0.018
+</td>
+<td style="text-align:right;">
+-0.070
+</td>
+<td style="text-align:right;">
+-0.086
+</td>
+<td style="text-align:right;">
+-0.007
+</td>
+<td style="text-align:right;">
+-0.019
+</td>
+<td style="text-align:right;">
+0.062
+</td>
+<td style="text-align:right;">
+-0.070
+</td>
+<td style="text-align:right;">
+0.038
+</td>
+<td style="text-align:right;">
+0.097
+</td>
+<td style="text-align:right;">
+0.024
+</td>
+<td style="text-align:right;">
+0.007
+</td>
+<td style="text-align:right;">
+-0.056
+</td>
+<td style="text-align:right;">
+0.117
+</td>
+<td style="text-align:right;">
+-0.054
+</td>
+<td style="text-align:right;">
+0.012
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:right;">
+-0.022
+</td>
+<td style="text-align:right;">
+0.075
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>What I would be curious to see here is whether any of the residuals represent statistically significant changes. The largest residual is for the correlation between HI6 and TP5. I’m just going to do a quick paired-r test using Fisher r-to-z transformations on the observed and predicted values for this correlation.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>fun<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(var1, var2) {</span>
+<span id="cb12-2"><a href="#cb12-2"></a>  r &lt;-<span class="st"> </span>mtx<span class="fl">.1</span>[var1, var2]</span>
+<span id="cb12-3"><a href="#cb12-3"></a>  t &lt;-<span class="st"> </span><span class="kw">paired.r</span>(r, r <span class="op">+</span><span class="st"> </span>mtx.<span class="fl">1.</span>a[var1, var2], <span class="dt">n =</span> <span class="dv">211</span>)</span>
+<span id="cb12-4"><a href="#cb12-4"></a>  <span class="kw">print</span>(<span class="kw">str_glue</span>(<span class="st">&quot;z: {round(t$z, 3)}, p: {round(t$p, 3)}&quot;</span>))</span>
+<span id="cb12-5"><a href="#cb12-5"></a>}</span>
+<span id="cb12-6"><a href="#cb12-6"></a></span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="kw">fun.1</span>(<span class="st">&quot;tp5&quot;</span>, <span class="st">&quot;hi6&quot;</span>)</span></code></pre></div>
+<pre><code>## z: 3.117, p: 0.002</code></pre>
+<p>Right, so that’s a significant change, as expected for a residual over .2. TP5 is “Faced with daily deadlines at work” and HI6 is “Hurry more than others”. A high residual means that the factors these items are loading on are more correlated than the items themselves. And I think that’s not surprising in this case; time pressure and hurried/impatient behavior seem conceptually related to me while deadlines at work and hurrying more than others are not closely related.</p>
+<p>Why don’t we look at one more before moving on? I’ll take a low residual to see how that translates into fit between loadings and factors. CD2 and ANX3 have a residual of just .021. I doubt that’s significantly significant, but, oh, what the heck.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">fun.1</span>(<span class="st">&quot;cd2&quot;</span>, <span class="st">&quot;anx3&quot;</span>)</span></code></pre></div>
+<pre><code>## z: 0.216, p: 0.829</code></pre>
+<p>Nope. Just nope.</p>
+<p>Now let’s look at the items. CD2 is “Hard-driving and competitive when younger”, and ANX3 is “Feel uneasy and restless”. The items are not closely related, and the correlation between them reflects that. And we already know that the correlation between CD and ANX is relatively low. Two low correlations produce a low residual. Makes sense to me.</p>
+<p>However, I do wonder if there is a floor effect in play. What I mean is, are two low correlations going to have a smaller difference than two high correlations? Since correlations are coefficients in linear equations with (assumed) constant variance, I really don’t think it should be an issue.</p>
+</div>
+<div id="model-fit" class="section level3">
+<h3>Model Fit</h3>
+<p>Before we put this model away for a bit, let’s look at its overall fit. As with the models in the previous assignment, I’ll pull up the <span class="math inline">\(\chi^2\)</span>, RMSEA, and TLI.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">fitMeasures</span>(fit<span class="fl">.1</span>, <span class="dt">fit.measures =</span> <span class="kw">c</span>(<span class="st">&quot;chisq&quot;</span>, <span class="st">&quot;df&quot;</span>, <span class="st">&quot;pvalue&quot;</span>, <span class="st">&quot;rmsea&quot;</span>, <span class="st">&quot;tli&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="st">  </span><span class="kw">round</span>(<span class="dv">3</span>) <span class="op">%&gt;%</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a><span class="st">  </span><span class="kw">kable</span>(<span class="dt">align =</span> <span class="st">&quot;l&quot;</span>)</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+x
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+chisq
+</td>
+<td style="text-align:left;">
+570.988
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+df
+</td>
+<td style="text-align:left;">
+340.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+pvalue
+</td>
+<td style="text-align:left;">
+0.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+rmsea
+</td>
+<td style="text-align:left;">
+0.057
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tli
+</td>
+<td style="text-align:left;">
+0.821
+</td>
+</tr>
+</tbody>
+</table>
+<p>Good <span class="math inline">\(\chi^2\)</span>, so-so RMSEA, and an unacceptably low TLI. I’m going to call it a poor model. My hopes were not very high after seeing some of the issues above, so I’m not surprised. Oh well.</p>
+</div>
+</div>
+<div id="orthogonal-measurement-model" class="section level2">
+<h2>2. Orthogonal Measurement Model</h2>
 </div>
 <div id="references" class="section level2">
 <h2>References</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># bbt_write_bib(&quot;biblio.json&quot;, bbt_detect_citations(&quot;hw12.Rmd&quot;), overwrite = TRUE)</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="kw">bbt_write_bib</span>(<span class="st">&quot;biblio.json&quot;</span>, <span class="kw">bbt_detect_citations</span>(<span class="st">&quot;hw12.Rmd&quot;</span>), <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div id="refs" class="references">
+<div id="ref-curran-baueranalytics19">
+<p>Curran-Bauer Analytics. (2019, June 10). What are modification indices and should I use them when fitting SEMs to my own data? <em>Curran-Bauer Analytics</em>. <a href="https://curranbauer.org/what-are-modification-indices-and-should-i-use-them-when-fitting-sems-to-my-own-data/">https://curranbauer.org/what-are-modification-indices-and-should-i-use-them-when-fitting-sems-to-my-own-data/</a></p>
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>I looked it up. <code>sem()</code> would work identically.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
     </section>
   </div>
