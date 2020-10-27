@@ -81,7 +81,7 @@ fitMeasures(fit.1, "rmsea")
 ```
 That's also close, but not exactly right. OK, here's what I'm going to do. I will proceed with the analysis using the results in R but continue to check them against the LISREL output for now.
 
-### Item Loadings
+### Item Loadings in Measurement-Only Model
 
 ```{r}
 tbl.1.a <- fit.1 %>%
@@ -181,7 +181,7 @@ Now let's look at the items. CD2 is "Hard-driving and competitive when younger",
 
 However, I do wonder if there is a floor effect in play. What I mean is, are two low correlations going to have a smaller difference than two high correlations? Since correlations are coefficients in linear equations with (assumed) constant variance, I really don't think it should be an issue.
 
-### Model Fit
+### Measurement Model Fit
 
 Before we put this model away for a bit, let's look at its overall fit. As with the models in the previous assignment, I'll pull up the $\chi^2$, RMSEA, and TLI.
 
@@ -195,7 +195,177 @@ Good $\chi^2$, so-so RMSEA, and an unacceptably low TLI. I'm going to call it a 
 
 ## 2. Orthogonal Measurement Model
 
+```{r}
+fit.2 <- cfa(chr.1, sample.cov = mtx.1, sample.nobs = 211, std.lv = T, orthogonal = T)
+```
 
+I checked this model against the results in LISREL and found that they were similar, but not identical. I will proceed nonetheless, but expect some differences on the order of rounding error.
+
+As usual, I will check the $\chi^2$, RMSEA, and TLI.
+
+```{r}
+fitMeasures(fit.2, fit.measures = c("chisq", "df", "pvalue", "rmsea", "tli")) %>%
+  round(3) %>%
+  kable(align = "l")
+```
+
+The $\chi^2$ statistic is still showing as significant, but the RMSEA and TLI statistics have degraded considerably.
+
+Now I will take a look at the $\chi^2$ difference test. This test should tell us whether there is sufficient improvement in fit to justify a loss of parsimony (i.e., more parameters). The test is simple: take the difference of the two models' $chi^2$ statistics and the difference in their degrees of freedom [@pavlov_etal20]. Then simply refer to a $\chi^2$ distribution.
+
+```{r}
+# M0 is nested within M1
+fun.2 <- function(M0, M1) {
+  D <- fitMeasures(M0, "chisq") - fitMeasures(M1, "chisq")
+  df <- fitMeasures(M0, "df") - fitMeasures(M1, "df")
+  p <- pchisq(D, df, lower.tail = F) %>%
+    set_names("p")
+  map_dbl(c(D, df, p), ~ round(., 3))
+}
+
+fun.2(fit.2, fit.1)
+```
+There is a significant difference between the fit of the models, with the intercorrelated model (from section 1) outperforming the orthogonal model. This tells us that there are indeed meaningful correlations between the factors, which bodes well for the structural model to follow.
+
+## 3. Structural Equation Model with Latent Variables
+
+This is the most complete model, incorporating both latent variables with multiple items and structural relationships.
+
+### Estimation in R
+
+I will reproduce the analysis in LISREL by combining the previously specified measurement and structural models into a single model. I will check the $\chi^2$ statistic as a quick spot check to compare it with the LISREL output.
+
+```{r}
+chr.3 <- '
+    # measurement model
+    amb =~ amb1 + amb2 + amb3 + amb4 + amb5
+    cd =~ cd1 + cd2 + cd3 + cd4
+    tp =~ tp1 + tp2 + tp3 + tp4 + tp5
+    hi =~ hi1 + hi2 + hi3 + hi4 + hi5 + hi6
+    anx =~ anx1 + anx2 + anx3 + anx4 + anx5 + anx6 + anx7 + anx8
+    
+    # structural model
+    cd ~ amb
+    tp ~ amb + cd
+    hi ~ tp + cd
+    anx ~ tp + hi
+'
+
+fit.3 <- sem(chr.3, sample.cov = mtx.1, sample.nobs = 211, std.lv = T)
+
+fitMeasures(fit.3, "chisq")
+```
+It's within a similar range to previous models, so I will proceed.
+
+### Comparison to Measurement Models
+
+First, I need to compare the measurement component of the model with the models from sections 1 and 2 above.
+
+#### Item Loadings in Full Model
+
+If I understand the difference between "standardized" and "completely standardized" correctly, the former standardizes only the latent variables while the latter standardizes both the latent variables and their indicators. `lavaan` offers the "completely" standardized solution by default.
+
+Now, simply adding a structural model should not change the measurement model underpinning it, so I will be most curious to see whether there has been any change in the item loadings from [the model in section 1](#item-loadings-in-measurement-model).
+
+```{r, message = F}
+standardizedSolution(fit.3, se = F, zstat = F, pvalue = F, ci = F) %>%
+  rename(full = "est.std") %>%
+  left_join(
+    standardizedSolution(fit.1, se = F, zstat = F, pvalue = F, ci = F) %>%
+              rename(measure = "est.std")
+    ) %>%
+  filter(op == "=~") %>%
+  mutate(dif = round(full - measure, 3)) %>%
+  kable
+```
+
+The column on the right is simply the difference between the loadings in the measurement model and in the full model. Overall, the items look stable, so the only issues are the same as before (e.g., TP5, ANX2).
+
+#### Full Model Fit
+
+The $\chi^2$-statistic, RMSEA, and TLI are below:
+
+```{r}
+fitMeasures(fit.3, c("chisq", "df", "pvalue", "rmsea", "tli")) %>%
+  round(3) %>%
+  kable(align = "l")
+```
+
+Not great, but not terrible for the models we've been running. The RMSEA is almost good, but the TLI is very poor.
+
+#### $\chi^2$ Difference Tests
+
+I'll start by comparing this model to the the less restrictive orthogonal model.
+
+```{r}
+fun.2(fit.2, fit.3)
+```
+Good start. It definitely performs better than the orthogonal model.
+
+Next, I will compare it to the intercorrelated measurement model.
+
+```{r}
+fun.2(fit.3, fit.1)
+```
+It did not perform better, so it's not an improvement in terms of explaining variance in the data. However, introducing a full structural model allows us to make causal arguments about the relationships between variables, so I think it is still worth proceeding with the analysis of this model.
+
+### Comparison to Structural Models
+
+I will first look at this model's structural parameters on their own, then compare them with the structural parameters in the three models from the previous assignment.
+
+#### Structural Parameters
+
+```{r}
+parameterEstimates(fit.3, ci = F) %>%
+  filter(op == "~") %>%
+  kable
+```
+
+Unlike in previous models, multiple structural parameters are non-significant&mdash;in fact, more than half. Only the paths between AMB and CD, TP and HI, and HI and ANX are supported by this analysis.
+
+#### Comparisons to Previous Structural Models
+
+I'll pull a table with all the parameter coefficients side-by-side.
+
+```{r, message = F}
+load(here('data', 'hw11data.RData'))
+
+fit.3 %>%
+parameterEstimates(se = F, zstat = F, pvalue = F, ci = F) %>%
+  rename(full = "est") %>%
+  left_join(
+    parameterEstimates(fit.reliabilities, se = F, zstat = F, pvalue = F, ci = F) %>%
+      rename(incorporated = "est") %>%
+      mutate_at(1:3, ~ str_remove(., "_.*"))
+    ) %>%
+  left_join(
+    parameterEstimates(fit.disattenuated, se = F, zstat = F, pvalue = F, ci = F) %>%
+      rename(disattenuated = "est")
+    ) %>%
+  left_join(
+    parameterEstimates(fit.observed, se = F, zstat = F, pvalue = F, ci = F) %>%
+      rename(path_analysis = "est")
+    ) %>%
+  filter(op == "~") %>%
+  mutate_at(4:7, ~ round(., 3)) %>%
+  kable
+```
+
+There are some dramatic differences here. The effect of AMB on CD and TP on HI are much stronger in the full model than in any others. They're so strong, in fact, that I recall my earlier complaint in the [path analysis assignment](https://dsethlewis.github.io/809site/hw/hw10.html#f.-conclusions) that AMB/CD and TP/HI seem more like facets of the same construct than different variables.
+
+If we consider that the present model is the 'best' test of these hypothesized paths because it most thoroughly incorporates the raw measurement data, then it is fair to say that only the AMB-CD and TP-HI paths are strongly supported. The HI-ANX path tested as significant in this model, but it's a weak effect that just barely meets the bar for significance.
+
+I would have to say the other paths are not supported. They have only very weak effects that do not test significant. That they appear larger in the other models diminishes my opinion of those models but does not convince me that the full structural model is incorrect.
+
+## Conclusions
+
+The steady drip of bad news for Theoretical Model A continues.
+
+The measures have low reliability (possibly due to inconsistent items), and the factor model is unconvincing (especially HI).
+
+Without a solid factor model, it's difficult to make substantive interpretations of the structural model. But were we to do so anyway, we would find that the hypothesized model does not correspond to the data. Five of seven paths are insignificant or weak, and the remaining two paths' strength can be attributed to conceptual similarities rather than causal relationships.
+
+That said, there clearly are some true relationships in the data. Perhaps a respecified model (informed by theory) could produce cleaner factors and significant structural parameters.
 
 ## References
 

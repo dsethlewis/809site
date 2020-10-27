@@ -16,6 +16,6 @@ HW #6: Categorical Dependent Variables - submitted
 
 [HW #11: Structural Equation Modeling I](hw/hw11.html) - completed
 
-[HW #12: Structural Equation Modeling II](hw/hw12.html) - in progress, part 1 completed
+[HW #12: Structural Equation Modeling II](hw/hw12.html) - completed
 
 [HW #13: The Publication Process](hw/hw13.html) - in progress

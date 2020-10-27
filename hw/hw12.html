@@ -415,8 +415,8 @@ code span.ot { color: #007020; }
 ## 0.057</code></pre>
 <p>That’s also close, but not exactly right. OK, here’s what I’m going to do. I will proceed with the analysis using the results in R but continue to check them against the LISREL output for now.</p>
 </div>
-<div id="item-loadings" class="section level3">
-<h3>Item Loadings</h3>
+<div id="item-loadings-in-measurement-only-model" class="section level3">
+<h3>Item Loadings in Measurement-Only Model</h3>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>tbl.<span class="fl">1.</span>a &lt;-<span class="st"> </span>fit<span class="fl">.1</span> <span class="op">%&gt;%</span></span>
 <span id="cb8-2"><a href="#cb8-2"></a><span class="st">  </span><span class="kw">parameterEstimates</span>(<span class="dt">ci =</span> F)</span>
 <span id="cb8-3"><a href="#cb8-3"></a></span>
@@ -4329,8 +4329,8 @@ anx8
 <p>Now let’s look at the items. CD2 is “Hard-driving and competitive when younger”, and ANX3 is “Feel uneasy and restless”. The items are not closely related, and the correlation between them reflects that. And we already know that the correlation between CD and ANX is relatively low. Two low correlations produce a low residual. Makes sense to me.</p>
 <p>However, I do wonder if there is a floor effect in play. What I mean is, are two low correlations going to have a smaller difference than two high correlations? Since correlations are coefficients in linear equations with (assumed) constant variance, I really don’t think it should be an issue.</p>
 </div>
-<div id="model-fit" class="section level3">
-<h3>Model Fit</h3>
+<div id="measurement-model-fit" class="section level3">
+<h3>Measurement Model Fit</h3>
 <p>Before we put this model away for a bit, let’s look at its overall fit. As with the models in the previous assignment, I’ll pull up the <span class="math inline">\(\chi^2\)</span>, RMSEA, and TLI.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">fitMeasures</span>(fit<span class="fl">.1</span>, <span class="dt">fit.measures =</span> <span class="kw">c</span>(<span class="st">&quot;chisq&quot;</span>, <span class="st">&quot;df&quot;</span>, <span class="st">&quot;pvalue&quot;</span>, <span class="st">&quot;rmsea&quot;</span>, <span class="st">&quot;tli&quot;</span>)) <span class="op">%&gt;%</span></span>
 <span id="cb16-2"><a href="#cb16-2"></a><span class="st">  </span><span class="kw">round</span>(<span class="dv">3</span>) <span class="op">%&gt;%</span></span>
@@ -4393,13 +4393,1224 @@ tli
 </div>
 <div id="orthogonal-measurement-model" class="section level2">
 <h2>2. Orthogonal Measurement Model</h2>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>fit<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="kw">cfa</span>(chr<span class="fl">.1</span>, <span class="dt">sample.cov =</span> mtx<span class="fl">.1</span>, <span class="dt">sample.nobs =</span> <span class="dv">211</span>, <span class="dt">std.lv =</span> T, <span class="dt">orthogonal =</span> T)</span></code></pre></div>
+<p>I checked this model against the results in LISREL and found that they were similar, but not identical. I will proceed nonetheless, but expect some differences on the order of rounding error.</p>
+<p>As usual, I will check the <span class="math inline">\(\chi^2\)</span>, RMSEA, and TLI.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="kw">fitMeasures</span>(fit<span class="fl">.2</span>, <span class="dt">fit.measures =</span> <span class="kw">c</span>(<span class="st">&quot;chisq&quot;</span>, <span class="st">&quot;df&quot;</span>, <span class="st">&quot;pvalue&quot;</span>, <span class="st">&quot;rmsea&quot;</span>, <span class="st">&quot;tli&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="st">  </span><span class="kw">round</span>(<span class="dv">3</span>) <span class="op">%&gt;%</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="st">  </span><span class="kw">kable</span>(<span class="dt">align =</span> <span class="st">&quot;l&quot;</span>)</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+x
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+chisq
+</td>
+<td style="text-align:left;">
+825.213
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+df
+</td>
+<td style="text-align:left;">
+350.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+pvalue
+</td>
+<td style="text-align:left;">
+0.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+rmsea
+</td>
+<td style="text-align:left;">
+0.080
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tli
+</td>
+<td style="text-align:left;">
+0.642
+</td>
+</tr>
+</tbody>
+</table>
+<p>The <span class="math inline">\(\chi^2\)</span> statistic is still showing as significant, but the RMSEA and TLI statistics have degraded considerably.</p>
+<p>Now I will take a look at the <span class="math inline">\(\chi^2\)</span> difference test. This test should tell us whether there is sufficient improvement in fit to justify a loss of parsimony (i.e., more parameters). The test is simple: take the difference of the two models’ <span class="math inline">\(chi^2\)</span> statistics and the difference in their degrees of freedom <span class="citation">(Pavlov et al., 2020)</span>. Then simply refer to a <span class="math inline">\(\chi^2\)</span> distribution.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># M0 is nested within M1</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a>fun<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(M0, M1) {</span>
+<span id="cb19-3"><a href="#cb19-3"></a>  D &lt;-<span class="st"> </span><span class="kw">fitMeasures</span>(M0, <span class="st">&quot;chisq&quot;</span>) <span class="op">-</span><span class="st"> </span><span class="kw">fitMeasures</span>(M1, <span class="st">&quot;chisq&quot;</span>)</span>
+<span id="cb19-4"><a href="#cb19-4"></a>  df &lt;-<span class="st"> </span><span class="kw">fitMeasures</span>(M0, <span class="st">&quot;df&quot;</span>) <span class="op">-</span><span class="st"> </span><span class="kw">fitMeasures</span>(M1, <span class="st">&quot;df&quot;</span>)</span>
+<span id="cb19-5"><a href="#cb19-5"></a>  p &lt;-<span class="st"> </span><span class="kw">pchisq</span>(D, df, <span class="dt">lower.tail =</span> F) <span class="op">%&gt;%</span></span>
+<span id="cb19-6"><a href="#cb19-6"></a><span class="st">    </span><span class="kw">set_names</span>(<span class="st">&quot;p&quot;</span>)</span>
+<span id="cb19-7"><a href="#cb19-7"></a>  <span class="kw">map_dbl</span>(<span class="kw">c</span>(D, df, p), <span class="op">~</span><span class="st"> </span><span class="kw">round</span>(., <span class="dv">3</span>))</span>
+<span id="cb19-8"><a href="#cb19-8"></a>}</span>
+<span id="cb19-9"><a href="#cb19-9"></a></span>
+<span id="cb19-10"><a href="#cb19-10"></a><span class="kw">fun.2</span>(fit<span class="fl">.2</span>, fit<span class="fl">.1</span>)</span></code></pre></div>
+<pre><code>##   chisq      df       p 
+## 254.225  10.000   0.000</code></pre>
+<p>There is a significant difference between the fit of the models, with the intercorrelated model (from section 1) outperforming the orthogonal model. This tells us that there are indeed meaningful correlations between the factors, which bodes well for the structural model to follow.</p>
+</div>
+<div id="structural-equation-model-with-latent-variables" class="section level2">
+<h2>3. Structural Equation Model with Latent Variables</h2>
+<p>This is the most complete model, incorporating both latent variables with multiple items and structural relationships.</p>
+<div id="estimation-in-r" class="section level3">
+<h3>Estimation in R</h3>
+<p>I will reproduce the analysis in LISREL by combining the previously specified measurement and structural models into a single model. I will check the <span class="math inline">\(\chi^2\)</span> statistic as a quick spot check to compare it with the LISREL output.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>chr<span class="fl">.3</span> &lt;-<span class="st"> &#39;</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="st">    # measurement model</span></span>
+<span id="cb21-3"><a href="#cb21-3"></a><span class="st">    amb =~ amb1 + amb2 + amb3 + amb4 + amb5</span></span>
+<span id="cb21-4"><a href="#cb21-4"></a><span class="st">    cd =~ cd1 + cd2 + cd3 + cd4</span></span>
+<span id="cb21-5"><a href="#cb21-5"></a><span class="st">    tp =~ tp1 + tp2 + tp3 + tp4 + tp5</span></span>
+<span id="cb21-6"><a href="#cb21-6"></a><span class="st">    hi =~ hi1 + hi2 + hi3 + hi4 + hi5 + hi6</span></span>
+<span id="cb21-7"><a href="#cb21-7"></a><span class="st">    anx =~ anx1 + anx2 + anx3 + anx4 + anx5 + anx6 + anx7 + anx8</span></span>
+<span id="cb21-8"><a href="#cb21-8"></a><span class="st">    </span></span>
+<span id="cb21-9"><a href="#cb21-9"></a><span class="st">    # structural model</span></span>
+<span id="cb21-10"><a href="#cb21-10"></a><span class="st">    cd ~ amb</span></span>
+<span id="cb21-11"><a href="#cb21-11"></a><span class="st">    tp ~ amb + cd</span></span>
+<span id="cb21-12"><a href="#cb21-12"></a><span class="st">    hi ~ tp + cd</span></span>
+<span id="cb21-13"><a href="#cb21-13"></a><span class="st">    anx ~ tp + hi</span></span>
+<span id="cb21-14"><a href="#cb21-14"></a><span class="st">&#39;</span></span>
+<span id="cb21-15"><a href="#cb21-15"></a></span>
+<span id="cb21-16"><a href="#cb21-16"></a>fit<span class="fl">.3</span> &lt;-<span class="st"> </span><span class="kw">sem</span>(chr<span class="fl">.3</span>, <span class="dt">sample.cov =</span> mtx<span class="fl">.1</span>, <span class="dt">sample.nobs =</span> <span class="dv">211</span>, <span class="dt">std.lv =</span> T)</span>
+<span id="cb21-17"><a href="#cb21-17"></a></span>
+<span id="cb21-18"><a href="#cb21-18"></a><span class="kw">fitMeasures</span>(fit<span class="fl">.3</span>, <span class="st">&quot;chisq&quot;</span>)</span></code></pre></div>
+<pre><code>##   chisq 
+## 574.787</code></pre>
+<p>It’s within a similar range to previous models, so I will proceed.</p>
+</div>
+<div id="comparison-to-measurement-models" class="section level3">
+<h3>Comparison to Measurement Models</h3>
+<p>First, I need to compare the measurement component of the model with the models from sections 1 and 2 above.</p>
+<div id="item-loadings-in-full-model" class="section level4">
+<h4>Item Loadings in Full Model</h4>
+<p>If I understand the difference between “standardized” and “completely standardized” correctly, the former standardizes only the latent variables while the latter standardizes both the latent variables and their indicators. <code>lavaan</code> offers the “completely” standardized solution by default.</p>
+<p>Now, simply adding a structural model should not change the measurement model underpinning it, so I will be most curious to see whether there has been any change in the item loadings from <a href="#item-loadings-in-measurement-model">the model in section 1</a>.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="kw">standardizedSolution</span>(fit<span class="fl">.3</span>, <span class="dt">se =</span> F, <span class="dt">zstat =</span> F, <span class="dt">pvalue =</span> F, <span class="dt">ci =</span> F) <span class="op">%&gt;%</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">full =</span> <span class="st">&quot;est.std&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb23-3"><a href="#cb23-3"></a><span class="st">  </span><span class="kw">left_join</span>(</span>
+<span id="cb23-4"><a href="#cb23-4"></a>    <span class="kw">standardizedSolution</span>(fit<span class="fl">.1</span>, <span class="dt">se =</span> F, <span class="dt">zstat =</span> F, <span class="dt">pvalue =</span> F, <span class="dt">ci =</span> F) <span class="op">%&gt;%</span></span>
+<span id="cb23-5"><a href="#cb23-5"></a><span class="st">              </span><span class="kw">rename</span>(<span class="dt">measure =</span> <span class="st">&quot;est.std&quot;</span>)</span>
+<span id="cb23-6"><a href="#cb23-6"></a>    ) <span class="op">%&gt;%</span></span>
+<span id="cb23-7"><a href="#cb23-7"></a><span class="st">  </span><span class="kw">filter</span>(op <span class="op">==</span><span class="st"> &quot;=~&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb23-8"><a href="#cb23-8"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">dif =</span> <span class="kw">round</span>(full <span class="op">-</span><span class="st"> </span>measure, <span class="dv">3</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb23-9"><a href="#cb23-9"></a><span class="st">  </span>kable</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+lhs
+</th>
+<th style="text-align:left;">
+op
+</th>
+<th style="text-align:left;">
+rhs
+</th>
+<th style="text-align:right;">
+full
+</th>
+<th style="text-align:right;">
+measure
+</th>
+<th style="text-align:right;">
+dif
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+amb1
+</td>
+<td style="text-align:right;">
+0.5965389
+</td>
+<td style="text-align:right;">
+0.5966004
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+amb2
+</td>
+<td style="text-align:right;">
+0.7104231
+</td>
+<td style="text-align:right;">
+0.7063214
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+amb3
+</td>
+<td style="text-align:right;">
+0.4236382
+</td>
+<td style="text-align:right;">
+0.4273957
+</td>
+<td style="text-align:right;">
+-0.004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+amb4
+</td>
+<td style="text-align:right;">
+0.5017753
+</td>
+<td style="text-align:right;">
+0.5048930
+</td>
+<td style="text-align:right;">
+-0.003
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+amb5
+</td>
+<td style="text-align:right;">
+0.4384411
+</td>
+<td style="text-align:right;">
+0.4383923
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cd
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+cd1
+</td>
+<td style="text-align:right;">
+0.6883756
+</td>
+<td style="text-align:right;">
+0.6878085
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cd
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+cd2
+</td>
+<td style="text-align:right;">
+0.4328564
+</td>
+<td style="text-align:right;">
+0.4309327
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cd
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+cd3
+</td>
+<td style="text-align:right;">
+0.8427348
+</td>
+<td style="text-align:right;">
+0.8422791
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cd
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+cd4
+</td>
+<td style="text-align:right;">
+0.8599982
+</td>
+<td style="text-align:right;">
+0.8619032
+</td>
+<td style="text-align:right;">
+-0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+tp1
+</td>
+<td style="text-align:right;">
+0.7099354
+</td>
+<td style="text-align:right;">
+0.7079060
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+tp2
+</td>
+<td style="text-align:right;">
+0.6819569
+</td>
+<td style="text-align:right;">
+0.6864029
+</td>
+<td style="text-align:right;">
+-0.004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+tp3
+</td>
+<td style="text-align:right;">
+0.5025391
+</td>
+<td style="text-align:right;">
+0.5057141
+</td>
+<td style="text-align:right;">
+-0.003
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+tp4
+</td>
+<td style="text-align:right;">
+0.4899837
+</td>
+<td style="text-align:right;">
+0.4907405
+</td>
+<td style="text-align:right;">
+-0.001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+tp5
+</td>
+<td style="text-align:right;">
+0.1854855
+</td>
+<td style="text-align:right;">
+0.1819788
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hi
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+hi1
+</td>
+<td style="text-align:right;">
+0.6256745
+</td>
+<td style="text-align:right;">
+0.6070384
+</td>
+<td style="text-align:right;">
+0.019
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hi
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+hi2
+</td>
+<td style="text-align:right;">
+0.3749693
+</td>
+<td style="text-align:right;">
+0.3849111
+</td>
+<td style="text-align:right;">
+-0.010
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hi
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+hi3
+</td>
+<td style="text-align:right;">
+0.3524110
+</td>
+<td style="text-align:right;">
+0.3533244
+</td>
+<td style="text-align:right;">
+-0.001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hi
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+hi4
+</td>
+<td style="text-align:right;">
+0.4134445
+</td>
+<td style="text-align:right;">
+0.4133005
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hi
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+hi5
+</td>
+<td style="text-align:right;">
+0.4859191
+</td>
+<td style="text-align:right;">
+0.4945298
+</td>
+<td style="text-align:right;">
+-0.009
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hi
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+hi6
+</td>
+<td style="text-align:right;">
+0.5681531
+</td>
+<td style="text-align:right;">
+0.5694435
+</td>
+<td style="text-align:right;">
+-0.001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+anx1
+</td>
+<td style="text-align:right;">
+0.5522502
+</td>
+<td style="text-align:right;">
+0.5484899
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+anx2
+</td>
+<td style="text-align:right;">
+0.2622109
+</td>
+<td style="text-align:right;">
+0.2616440
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+anx3
+</td>
+<td style="text-align:right;">
+0.5686377
+</td>
+<td style="text-align:right;">
+0.5671190
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+anx4
+</td>
+<td style="text-align:right;">
+0.6094987
+</td>
+<td style="text-align:right;">
+0.6106984
+</td>
+<td style="text-align:right;">
+-0.001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+anx5
+</td>
+<td style="text-align:right;">
+0.5356453
+</td>
+<td style="text-align:right;">
+0.5339230
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+anx6
+</td>
+<td style="text-align:right;">
+0.7259092
+</td>
+<td style="text-align:right;">
+0.7286943
+</td>
+<td style="text-align:right;">
+-0.003
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+anx7
+</td>
+<td style="text-align:right;">
+0.5527196
+</td>
+<td style="text-align:right;">
+0.5526306
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:left;">
+=~
+</td>
+<td style="text-align:left;">
+anx8
+</td>
+<td style="text-align:right;">
+0.3539843
+</td>
+<td style="text-align:right;">
+0.3557205
+</td>
+<td style="text-align:right;">
+-0.002
+</td>
+</tr>
+</tbody>
+</table>
+<p>The column on the right is simply the difference between the loadings in the measurement model and in the full model. Overall, the items look stable, so the only issues are the same as before (e.g., TP5, ANX2).</p>
+</div>
+<div id="full-model-fit" class="section level4">
+<h4>Full Model Fit</h4>
+<p>The <span class="math inline">\(\chi^2\)</span>-statistic, RMSEA, and TLI are below:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="kw">fitMeasures</span>(fit<span class="fl">.3</span>, <span class="kw">c</span>(<span class="st">&quot;chisq&quot;</span>, <span class="st">&quot;df&quot;</span>, <span class="st">&quot;pvalue&quot;</span>, <span class="st">&quot;rmsea&quot;</span>, <span class="st">&quot;tli&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a><span class="st">  </span><span class="kw">round</span>(<span class="dv">3</span>) <span class="op">%&gt;%</span></span>
+<span id="cb24-3"><a href="#cb24-3"></a><span class="st">  </span><span class="kw">kable</span>(<span class="dt">align =</span> <span class="st">&quot;l&quot;</span>)</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+x
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+chisq
+</td>
+<td style="text-align:left;">
+574.787
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+df
+</td>
+<td style="text-align:left;">
+343.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+pvalue
+</td>
+<td style="text-align:left;">
+0.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+rmsea
+</td>
+<td style="text-align:left;">
+0.057
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tli
+</td>
+<td style="text-align:left;">
+0.822
+</td>
+</tr>
+</tbody>
+</table>
+<p>Not great, but not terrible for the models we’ve been running. The RMSEA is almost good, but the TLI is very poor.</p>
+</div>
+<div id="chi2-difference-tests" class="section level4">
+<h4><span class="math inline">\(\chi^2\)</span> Difference Tests</h4>
+<p>I’ll start by comparing this model to the the less restrictive orthogonal model.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="kw">fun.2</span>(fit<span class="fl">.2</span>, fit<span class="fl">.3</span>)</span></code></pre></div>
+<pre><code>##   chisq      df       p 
+## 250.426   7.000   0.000</code></pre>
+<p>Good start. It definitely performs better than the orthogonal model.</p>
+<p>Next, I will compare it to the intercorrelated measurement model.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="kw">fun.2</span>(fit<span class="fl">.3</span>, fit<span class="fl">.1</span>)</span></code></pre></div>
+<pre><code>## chisq    df     p 
+## 3.799 3.000 0.284</code></pre>
+<p>It did not perform better, so it’s not an improvement in terms of explaining variance in the data. However, introducing a full structural model allows us to make causal arguments about the relationships between variables, so I think it is still worth proceeding with the analysis of this model.</p>
+</div>
+</div>
+<div id="comparison-to-structural-models" class="section level3">
+<h3>Comparison to Structural Models</h3>
+<p>I will first look at this model’s structural parameters on their own, then compare them with the structural parameters in the three models from the previous assignment.</p>
+<div id="structural-parameters" class="section level4">
+<h4>Structural Parameters</h4>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="kw">parameterEstimates</span>(fit<span class="fl">.3</span>, <span class="dt">ci =</span> F) <span class="op">%&gt;%</span></span>
+<span id="cb29-2"><a href="#cb29-2"></a><span class="st">  </span><span class="kw">filter</span>(op <span class="op">==</span><span class="st"> &quot;~&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb29-3"><a href="#cb29-3"></a><span class="st">  </span>kable</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+lhs
+</th>
+<th style="text-align:left;">
+op
+</th>
+<th style="text-align:left;">
+rhs
+</th>
+<th style="text-align:right;">
+est
+</th>
+<th style="text-align:right;">
+se
+</th>
+<th style="text-align:right;">
+z
+</th>
+<th style="text-align:right;">
+pvalue
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+cd
+</td>
+<td style="text-align:left;">
+~
+</td>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:right;">
+1.2694818
+</td>
+<td style="text-align:right;">
+0.2110196
+</td>
+<td style="text-align:right;">
+6.0159422
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:left;">
+~
+</td>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:right;">
+0.3122643
+</td>
+<td style="text-align:right;">
+0.2064213
+</td>
+<td style="text-align:right;">
+1.5127520
+</td>
+<td style="text-align:right;">
+0.1303427
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:left;">
+~
+</td>
+<td style="text-align:left;">
+cd
+</td>
+<td style="text-align:right;">
+0.1098519
+</td>
+<td style="text-align:right;">
+0.1208939
+</td>
+<td style="text-align:right;">
+0.9086640
+</td>
+<td style="text-align:right;">
+0.3635275
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hi
+</td>
+<td style="text-align:left;">
+~
+</td>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:right;">
+1.3982499
+</td>
+<td style="text-align:right;">
+0.3579335
+</td>
+<td style="text-align:right;">
+3.9064516
+</td>
+<td style="text-align:right;">
+0.0000937
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hi
+</td>
+<td style="text-align:left;">
+~
+</td>
+<td style="text-align:left;">
+cd
+</td>
+<td style="text-align:right;">
+0.1008006
+</td>
+<td style="text-align:right;">
+0.0969279
+</td>
+<td style="text-align:right;">
+1.0399540
+</td>
+<td style="text-align:right;">
+0.2983613
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:left;">
+~
+</td>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:right;">
+0.0550525
+</td>
+<td style="text-align:right;">
+0.2963488
+</td>
+<td style="text-align:right;">
+0.1857692
+</td>
+<td style="text-align:right;">
+0.8526257
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:left;">
+~
+</td>
+<td style="text-align:left;">
+hi
+</td>
+<td style="text-align:right;">
+0.3569672
+</td>
+<td style="text-align:right;">
+0.1775020
+</td>
+<td style="text-align:right;">
+2.0110598
+</td>
+<td style="text-align:right;">
+0.0443191
+</td>
+</tr>
+</tbody>
+</table>
+<p>Unlike in previous models, multiple structural parameters are non-significant—in fact, more than half. Only the paths between AMB and CD, TP and HI, and HI and ANX are supported by this analysis.</p>
+</div>
+<div id="comparisons-to-previous-structural-models" class="section level4">
+<h4>Comparisons to Previous Structural Models</h4>
+<p>I’ll pull a table with all the parameter coefficients side-by-side.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="kw">load</span>(<span class="kw">here</span>(<span class="st">&#39;data&#39;</span>, <span class="st">&#39;hw11data.RData&#39;</span>))</span>
+<span id="cb30-2"><a href="#cb30-2"></a></span>
+<span id="cb30-3"><a href="#cb30-3"></a>fit<span class="fl">.3</span> <span class="op">%&gt;%</span></span>
+<span id="cb30-4"><a href="#cb30-4"></a><span class="kw">parameterEstimates</span>(<span class="dt">se =</span> F, <span class="dt">zstat =</span> F, <span class="dt">pvalue =</span> F, <span class="dt">ci =</span> F) <span class="op">%&gt;%</span></span>
+<span id="cb30-5"><a href="#cb30-5"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">full =</span> <span class="st">&quot;est&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb30-6"><a href="#cb30-6"></a><span class="st">  </span><span class="kw">left_join</span>(</span>
+<span id="cb30-7"><a href="#cb30-7"></a>    <span class="kw">parameterEstimates</span>(fit.reliabilities, <span class="dt">se =</span> F, <span class="dt">zstat =</span> F, <span class="dt">pvalue =</span> F, <span class="dt">ci =</span> F) <span class="op">%&gt;%</span></span>
+<span id="cb30-8"><a href="#cb30-8"></a><span class="st">      </span><span class="kw">rename</span>(<span class="dt">incorporated =</span> <span class="st">&quot;est&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb30-9"><a href="#cb30-9"></a><span class="st">      </span><span class="kw">mutate_at</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="op">~</span><span class="st"> </span><span class="kw">str_remove</span>(., <span class="st">&quot;_.*&quot;</span>))</span>
+<span id="cb30-10"><a href="#cb30-10"></a>    ) <span class="op">%&gt;%</span></span>
+<span id="cb30-11"><a href="#cb30-11"></a><span class="st">  </span><span class="kw">left_join</span>(</span>
+<span id="cb30-12"><a href="#cb30-12"></a>    <span class="kw">parameterEstimates</span>(fit.disattenuated, <span class="dt">se =</span> F, <span class="dt">zstat =</span> F, <span class="dt">pvalue =</span> F, <span class="dt">ci =</span> F) <span class="op">%&gt;%</span></span>
+<span id="cb30-13"><a href="#cb30-13"></a><span class="st">      </span><span class="kw">rename</span>(<span class="dt">disattenuated =</span> <span class="st">&quot;est&quot;</span>)</span>
+<span id="cb30-14"><a href="#cb30-14"></a>    ) <span class="op">%&gt;%</span></span>
+<span id="cb30-15"><a href="#cb30-15"></a><span class="st">  </span><span class="kw">left_join</span>(</span>
+<span id="cb30-16"><a href="#cb30-16"></a>    <span class="kw">parameterEstimates</span>(fit.observed, <span class="dt">se =</span> F, <span class="dt">zstat =</span> F, <span class="dt">pvalue =</span> F, <span class="dt">ci =</span> F) <span class="op">%&gt;%</span></span>
+<span id="cb30-17"><a href="#cb30-17"></a><span class="st">      </span><span class="kw">rename</span>(<span class="dt">path_analysis =</span> <span class="st">&quot;est&quot;</span>)</span>
+<span id="cb30-18"><a href="#cb30-18"></a>    ) <span class="op">%&gt;%</span></span>
+<span id="cb30-19"><a href="#cb30-19"></a><span class="st">  </span><span class="kw">filter</span>(op <span class="op">==</span><span class="st"> &quot;~&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb30-20"><a href="#cb30-20"></a><span class="st">  </span><span class="kw">mutate_at</span>(<span class="dv">4</span><span class="op">:</span><span class="dv">7</span>, <span class="op">~</span><span class="st"> </span><span class="kw">round</span>(., <span class="dv">3</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb30-21"><a href="#cb30-21"></a><span class="st">  </span>kable</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+lhs
+</th>
+<th style="text-align:left;">
+op
+</th>
+<th style="text-align:left;">
+rhs
+</th>
+<th style="text-align:right;">
+full
+</th>
+<th style="text-align:right;">
+incorporated
+</th>
+<th style="text-align:right;">
+disattenuated
+</th>
+<th style="text-align:right;">
+path_analysis
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+cd
+</td>
+<td style="text-align:left;">
+~
+</td>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:right;">
+1.269
+</td>
+<td style="text-align:right;">
+0.763
+</td>
+<td style="text-align:right;">
+0.760
+</td>
+<td style="text-align:right;">
+0.551
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:left;">
+~
+</td>
+<td style="text-align:left;">
+amb
+</td>
+<td style="text-align:right;">
+0.312
+</td>
+<td style="text-align:right;">
+0.397
+</td>
+<td style="text-align:right;">
+0.394
+</td>
+<td style="text-align:right;">
+0.217
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:left;">
+~
+</td>
+<td style="text-align:left;">
+cd
+</td>
+<td style="text-align:right;">
+0.110
+</td>
+<td style="text-align:right;">
+0.115
+</td>
+<td style="text-align:right;">
+0.129
+</td>
+<td style="text-align:right;">
+0.183
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hi
+</td>
+<td style="text-align:left;">
+~
+</td>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:right;">
+1.398
+</td>
+<td style="text-align:right;">
+0.659
+</td>
+<td style="text-align:right;">
+0.633
+</td>
+<td style="text-align:right;">
+0.385
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+hi
+</td>
+<td style="text-align:left;">
+~
+</td>
+<td style="text-align:left;">
+cd
+</td>
+<td style="text-align:right;">
+0.101
+</td>
+<td style="text-align:right;">
+0.115
+</td>
+<td style="text-align:right;">
+0.157
+</td>
+<td style="text-align:right;">
+0.186
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:left;">
+~
+</td>
+<td style="text-align:left;">
+tp
+</td>
+<td style="text-align:right;">
+0.055
+</td>
+<td style="text-align:right;">
+0.149
+</td>
+<td style="text-align:right;">
+0.183
+</td>
+<td style="text-align:right;">
+0.210
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+anx
+</td>
+<td style="text-align:left;">
+~
+</td>
+<td style="text-align:left;">
+hi
+</td>
+<td style="text-align:right;">
+0.357
+</td>
+<td style="text-align:right;">
+0.471
+</td>
+<td style="text-align:right;">
+0.466
+</td>
+<td style="text-align:right;">
+0.314
+</td>
+</tr>
+</tbody>
+</table>
+<p>There are some dramatic differences here. The effect of AMB on CD and TP on HI are much stronger in the full model than in any others. They’re so strong, in fact, that I recall my earlier complaint in the <a href="https://dsethlewis.github.io/809site/hw/hw10.html#f.-conclusions">path analysis assignment</a> that AMB/CD and TP/HI seem more like facets of the same construct than different variables.</p>
+<p>If we consider that the present model is the ‘best’ test of these hypothesized paths because it most thoroughly incorporates the raw measurement data, then it is fair to say that only the AMB-CD and TP-HI paths are strongly supported. The HI-ANX path tested as significant in this model, but it’s a weak effect that just barely meets the bar for significance.</p>
+<p>I would have to say the other paths are not supported. They have only very weak effects that do not test significant. That they appear larger in the other models diminishes my opinion of those models but does not convince me that the full structural model is incorrect.</p>
+</div>
+</div>
+</div>
+<div id="conclusions" class="section level2">
+<h2>Conclusions</h2>
+<p>The steady drip of bad news for Theoretical Model A continues.</p>
+<p>The measures have low reliability (possibly due to inconsistent items), and the factor model is unconvincing (especially HI).</p>
+<p>Without a solid factor model, it’s difficult to make substantive interpretations of the structural model. But were we to do so anyway, we would find that the hypothesized model does not correspond to the data. Five of seven paths are insignificant or weak, and the remaining two paths’ strength can be attributed to conceptual similarities rather than causal relationships.</p>
+<p>That said, there clearly are some true relationships in the data. Perhaps a respecified model (informed by theory) could produce cleaner factors and significant structural parameters.</p>
 </div>
 <div id="references" class="section level2">
 <h2>References</h2>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="kw">bbt_write_bib</span>(<span class="st">&quot;biblio.json&quot;</span>, <span class="kw">bbt_detect_citations</span>(<span class="st">&quot;hw12.Rmd&quot;</span>), <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="kw">bbt_write_bib</span>(<span class="st">&quot;biblio.json&quot;</span>, <span class="kw">bbt_detect_citations</span>(<span class="st">&quot;hw12.Rmd&quot;</span>), <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <div id="refs" class="references">
 <div id="ref-curran-baueranalytics19">
 <p>Curran-Bauer Analytics. (2019, June 10). What are modification indices and should I use them when fitting SEMs to my own data? <em>Curran-Bauer Analytics</em>. <a href="https://curranbauer.org/what-are-modification-indices-and-should-i-use-them-when-fitting-sems-to-my-own-data/">https://curranbauer.org/what-are-modification-indices-and-should-i-use-them-when-fitting-sems-to-my-own-data/</a></p>
+</div>
+<div id="ref-pavlov_etal20">
+<p>Pavlov, G., Shi, D., &amp; Maydeu-Olivares, A. (2020). Chi-square Difference Tests for Comparing Nested Models: An Evaluation with Non-normal Data. <em>Structural Equation Modeling: A Multidisciplinary Journal</em>, <em>0</em>(0), 1–10. <a href="https://doi.org/10.1080/10705511.2020.1717957">https://doi.org/10.1080/10705511.2020.1717957</a></p>
 </div>
 </div>
 </div>

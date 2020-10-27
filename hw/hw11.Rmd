@@ -287,6 +287,17 @@ The latent-variable model performed the best in terms of overall model fit, but 
 
 The bigger picture is that different statistical procedures that all incorporate the same information are producing different results, and I find that worrisome. I don't really understand what's going on under the hood well enough to say why it's happening, but overall, I do not have confidence in Theoretical Model A.
 
+## Export Objects
+
+```{r}
+# Objects to use again in HW #12
+fit.observed <- fit.2.a
+fit.disattenuated <- fit.2.b
+fit.reliabilities <- fit.4
+save(fit.observed, fit.disattenuated, fit.reliabilities, file = here('data', "hw11data.RData"))
+```
+
+
 ## References
 
 ```{r results = "hide"}

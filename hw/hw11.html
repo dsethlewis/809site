@@ -1283,9 +1283,17 @@ code span.ot { color: #007020; }
 <p>The bigger picture is that different statistical procedures that all incorporate the same information are producing different results, and I find that worrisome. I don’t really understand what’s going on under the hood well enough to say why it’s happening, but overall, I do not have confidence in Theoretical Model A.</p>
 </div>
 </div>
+<div id="export-objects" class="section level2">
+<h2>Export Objects</h2>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="co"># Objects to use again in HW #12</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a>fit.observed &lt;-<span class="st"> </span>fit.<span class="fl">2.</span>a</span>
+<span id="cb24-3"><a href="#cb24-3"></a>fit.disattenuated &lt;-<span class="st"> </span>fit.<span class="fl">2.</span>b</span>
+<span id="cb24-4"><a href="#cb24-4"></a>fit.reliabilities &lt;-<span class="st"> </span>fit<span class="fl">.4</span></span>
+<span id="cb24-5"><a href="#cb24-5"></a><span class="kw">save</span>(fit.observed, fit.disattenuated, fit.reliabilities, <span class="dt">file =</span> <span class="kw">here</span>(<span class="st">&#39;data&#39;</span>, <span class="st">&quot;hw11data.RData&quot;</span>))</span></code></pre></div>
+</div>
 <div id="references" class="section level2">
 <h2>References</h2>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="kw">bbt_write_bib</span>(<span class="st">&quot;biblio.json&quot;</span>, <span class="kw">bbt_detect_citations</span>(<span class="st">&quot;hw11.Rmd&quot;</span>), <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="kw">bbt_write_bib</span>(<span class="st">&quot;biblio.json&quot;</span>, <span class="kw">bbt_detect_citations</span>(<span class="st">&quot;hw11.Rmd&quot;</span>), <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <div id="refs" class="references">
 <div id="ref-kenny20">
 <p>Kenny, D. A. (2020, June 5). <em>Measuring Model Fit</em>. <a href="http://davidakenny.net/cm/fit.htm">http://davidakenny.net/cm/fit.htm</a></p>
