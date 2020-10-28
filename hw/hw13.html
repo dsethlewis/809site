@@ -12,8 +12,9 @@
 
 <meta name="author" content="Daniel Lewis" />
 
+<meta name="date" content="2020-10-28" />
 
-<title>HW #13: The Publication Process</title>
+<title>HW #13: The Publishing Process</title>
 
 <script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
 // v0.0.1
@@ -153,9 +154,9 @@ code span.ot { color: #007020; }
 
 <header>
 <div class="inner">
-<h1 class="title toc-ignore">HW #13: The Publication Process</h1>
+<h1 class="title toc-ignore">HW #13: The Publishing Process</h1>
 <h3 class="author">Daniel Lewis</h3>
-<h3 class="date">9/30/2020</h3>
+<h3 class="date">10/28/2020</h3>
 </div>
 </header>
 
@@ -166,29 +167,49 @@ code span.ot { color: #007020; }
     <section id="main-content">
 <div id="load-packages" class="section level2">
 <h2>Load Packages</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Projects</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(here)</span>
-<span id="cb1-3"><a href="#cb1-3"></a></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="co"># R Markdown</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="kw">library</span>(knitr)</span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="kw">library</span>(rbbt)</span>
-<span id="cb1-7"><a href="#cb1-7"></a></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="co"># Statistics</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="kw">library</span>(psych)</span>
-<span id="cb1-10"><a href="#cb1-10"></a></span>
-<span id="cb1-11"><a href="#cb1-11"></a><span class="co"># Tidyverse</span></span>
-<span id="cb1-12"><a href="#cb1-12"></a><span class="kw">library</span>(readxl)</span>
-<span id="cb1-13"><a href="#cb1-13"></a><span class="kw">library</span>(tidyverse)</span>
-<span id="cb1-14"><a href="#cb1-14"></a><span class="kw">library</span>(broom)</span>
-<span id="cb1-15"><a href="#cb1-15"></a><span class="kw">library</span>(glue)</span>
-<span id="cb1-16"><a href="#cb1-16"></a><span class="kw">library</span>(corrr)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># R Markdown</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(rbbt)</span></code></pre></div>
 </div>
-<div id="section" class="section level2">
-<h2>2.</h2>
+<div id="questions-and-concerns" class="section level2">
+<h2>1. Questions and Concerns</h2>
+<p>Before I start, I must acknowledge that since I’m writing this <em>after</em> deciding to leave the program at UNC—and with it, my career in academia—I must take a different perspective on this topic. Trepidation and anxiety, or excitement, hardly make sense from my position as an outsider. Instead, I can only view the publishing process with curiosity, relief, and, perhaps, a bittersweet longing.</p>
+<p>It would be too difficult at this point to put myself in an old pair of shoes that no longer fit and pretend I am still the Daniel Lewis of last fall who expected to go through the publishing process. Instead, I will work through this assignment as who I am: a detached, but curious observer.</p>
+<p>That said, here are some questions and concerns:</p>
+<ul>
+<li>Does the publishing process in the organizational sciences serve all its stakeholders equally well? If not, who benefits most and at whose expense?</li>
+<li>Does the publishing process promote research that is balanced in validity, clarity, relevance, and timeliness?</li>
+<li>To the extent that the institutions of the publishing process embody a hierarchy of power and prestige, are its offices allocated fairly? Does its structure show respect for the value of equality?</li>
+<li>Does the publishing process accommodate people with disabilities? More specifically, do people with ADHD, autism, learning disabilities, or physical disabilities (but with strong research abilities) have an equal chance of publishing compared to people without such disabilities?</li>
+<li>How do I personally feel about leaving before going through the publishing process? Am I relieved at having dodged a bullet or regretful at having lost an opportunity?</li>
+</ul>
+<p><span class="citation">Graham &amp; Stablein (1995)</span> suggest another question:</p>
+<ul>
+<li>What forms of constructive criticism and debate are prevalent within the institutions of the publishing process about the publishing process itself? What, if any, reforms are being considered where the publishing process falls short?</li>
+</ul>
+</div>
+<div id="schneider95" class="section level2">
+<h2>2. <span class="citation">Schneider (1995)</span></h2>
+</div>
+<div id="the-review-process" class="section level2">
+<h2>3. The Review Process</h2>
+</div>
+<div id="example-exchanges-from-an-actual-review" class="section level2">
+<h2>4. Example: Exchanges from an Actual Review</h2>
+</div>
+<div id="top-10-keys-to-publishing-in-scholarly-journals" class="section level2">
+<h2>5. Top 10 Keys to Publishing in Scholarly Journals</h2>
 </div>
 <div id="references" class="section level2">
 <h2>References</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># bbt_write_bib(&quot;biblio.json&quot;, bbt_detect_citations(&quot;hw13.Rmd&quot;), overwrite = TRUE)</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">bbt_write_bib</span>(<span class="st">&quot;biblio.json&quot;</span>, <span class="kw">bbt_detect_citations</span>(<span class="st">&quot;hw13.Rmd&quot;</span>), <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div id="refs" class="references">
+<div id="ref-graham_stablein95">
+<p>Graham, J. W., &amp; Stablein, R. E. (1995). A Funny Thing Happened on the Way to Publication: Newcomers’ Perspectives on Publishing in the Organizational Sciences. In L. L. Cummings &amp; P. J. Frost (Eds.), <em>Publishing in the Organizational Sciences</em> (2nd ed., pp. 113–131). SAGE Publications, Inc.</p>
+</div>
+<div id="ref-schneider95">
+<p>Schneider, B. (1995). Some Propositions About Getting Research Published. In L. L. Cummings &amp; P. J. Frost (Eds.), <em>Publishing in the Organizational Sciences</em> (2nd ed., pp. 216–226). SAGE Publications, Inc.</p>
+</div>
+</div>
 </div>
     </section>
   </div>

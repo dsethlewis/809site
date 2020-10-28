@@ -1,7 +1,7 @@
 ---
-title: 'HW #13: The Publication Process'
+title: 'HW #13: The Publishing Process'
 author: "Daniel Lewis"
-date: "9/30/2020"
+date: "10/28/2020"
 output: 
   prettydoc::html_pretty:
     theme: architect
@@ -11,30 +11,42 @@ csl: "../apa.csl"
 ---
 ## Load Packages
 
-```{r message = F, warning = F}
-# Projects
-library(here)
-
+```{r}
 # R Markdown
-library(knitr)
 library(rbbt)
-
-# Statistics
-library(psych)
-
-# Tidyverse
-library(readxl)
-library(tidyverse)
-library(broom)
-library(glue)
-library(corrr)
 ```
 
-## 2.
+## 1. Questions and Concerns
+
+Before I start, I must acknowledge that since I'm writing this *after* deciding to leave the program at UNC&mdash;and with it, my career in academia&mdash;I must take a different perspective on this topic. Trepidation and anxiety, or excitement, hardly make sense from my position as an outsider. Instead, I can only view the publishing process with curiosity, relief, and, perhaps, a bittersweet longing. 
+
+It would be too difficult at this point to put myself in an old pair of shoes that no longer fit and pretend I am still the Daniel Lewis of last fall who expected to go through the publishing process. Instead, I will work through this assignment as who I am: a detached, but curious observer.
+
+That said, here are some questions and concerns:
+
+- Does the publishing process in the organizational sciences serve all its stakeholders equally well? If not, who benefits most and at whose expense?
+- Does the publishing process promote research that is balanced in validity, clarity, relevance, and timeliness?
+- To the extent that the institutions of the publishing process embody a hierarchy of power and prestige, are its offices allocated fairly? Does its structure show respect for the value of equality?
+- Does the publishing process accommodate people with disabilities? More specifically, do people with ADHD, autism, learning disabilities, or physical disabilities (but with strong research abilities) have an equal chance of publishing compared to people without such disabilities?
+- How do I personally feel about leaving before going through the publishing process? Am I relieved at having dodged a bullet or regretful at having lost an opportunity?
+
+@graham_stablein95 suggest another question:
+
+- What forms of constructive criticism and debate are prevalent within the institutions of the publishing process about the publishing process itself? What, if any, reforms are being considered where the publishing process falls short?
+
+## 2. @schneider95
+
+
+
+## 3. The Review Process
+
+## 4. Example: Exchanges from an Actual Review
+
+## 5. Top 10 Keys to Publishing in Scholarly Journals
 
 ## References
 
 ```{r results = "hide"}
-# bbt_write_bib("biblio.json", bbt_detect_citations("hw13.Rmd"), overwrite = TRUE)
+bbt_write_bib("biblio.json", bbt_detect_citations("hw13.Rmd"), overwrite = TRUE)
 ```
 
